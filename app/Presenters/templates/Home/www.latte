@@ -1,0 +1,26 @@
+<html>
+<head>
+  <link rel="icon" type="image/x-icon" href="layout/logo.png">
+  
+  
+</head>
+<section id="main-text">
+
+<script>
+  // Získejte aktuální URL stránky
+  var currentUrl = window.location.href;
+
+  // Získání všech odkazů v menu
+  var menuLinks = document.querySelectorAll("ul.nav-menu li a");
+
+  // Projděte všechny odkazy v menu a porovnejte je s aktuální URL
+  menuLinks.forEach(function(link) {
+    if (link.href === currentUrl) {
+      // Pokud se odkaz shoduje s aktuální URL, přidejte třídu "active"
+      link.classList.add("active");
+    }
+  });
+</script>
+
+
+</html>

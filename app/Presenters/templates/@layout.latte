@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+
+  	<link rel="icon" type="image/x-icon" href="https://www.cestakvitezstvi.cz/layout/logo.png">
+	<link rel="stylesheet" href="{$basePath}/src/style.css">
+
+	<title>{ifset title}{include title|stripHtml} | {/ifset}Bezdrátové časomíry</title>
+</head>
+
+<body>
+
+	<img style="float:right;width:96px;height:96px;padding:5px;" src="https://www.cestakvitezstvi.cz/layout/logo.png">
+  	<img style="float:left;width:96px;height:96px;padding:5px;" src="https://www.cestakvitezstvi.cz/layout/logo.png">
+
+	<h1 class="nadpis">
+	Bezdrátová časomíra pro požární terče
+	</h1>
+	<br>
+	<ul class="nav-menu" id="menu">
+	<li><a n:href="Home:default" {if $actionName == 'default'}class="active"{/if}>Projekt</a></li>
+	<li><a n:href="Terce:casomira" {if $actionName == 'casomira'}class="active"{/if}>Časomíra</a></li>
+	</ul>
+
+	{include content}
+
+	<footer style="	padding-top: 30px;">
+
+	<div class="footer" style="background-color: #333">
+		<div class="row">
+		<div class="column2">
+			<h2>Autoři</h2>
+			<h3>Petr Bouda, 4.P</h3>
+			<p>Podíl na: Hardware, Software</p>
+			<h3>Jakub Rauner, 4.P</h3>
+			<p>Podíl na: Firmware, Software</p>
+		</div>
+			<div class="column">
+			<h3>VOŠ a SPŠE PLZEŇ</h3>
+			<p style="font-weight: bold">Adresa:</p>
+			<p>Koterovská 828/85</p>
+			<p>326 00 Plzeň</p>
+			<p><strong>Tel:</strong>&nbsp;+420 377 418 111<br>
+			<strong>E-mail:</strong>&nbsp;<a href="mailto:spse@spseplzen.cz">spse@spseplzen.cz</a></p>
+			</div>
+			</aside>					
+		</div>
+	</div>
+	</footer>
+
+</body>
+</html>
+
+<!--<style>
+
+* {
+	font-family: Arial, Helvetica, sans-serif;
+}
+        .nav-menu li.logout {
+            float: right;
+        }
+        .nav-menu li.logout a {
+            background-color: red;
+            color: white;
+        }
+body {
+  background: #ededed;
+  margin: 0 auto;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 18px
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+ul.nav-menu li a.active {
+  background-color: #0fc1d9; /* Modrá barva pro aktivní odkaz */
+  color: white; /* Bílý text pro kontrast */
+}
+.nadpis {
+  text-align: center;
+  font-size: 48px;
+  padding-bottom: 0px;
+  padding-top: 20px;
+}
+.main-text {
+  float:center;
+  text-align: center;
+  margin: auto;
+  width: 80%;
+  padding: 10px;
+  font-size: 24px;
+}
+.main-header {
+  float:center;
+  text-align: center;
+  margin: auto;
+  width: 80%;
+  padding: 10px;
+  font-size: 40px;
+  font-weight: bold
+}
+.image-full-site {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  border: 5px solid transparent;
+  transition: border 0.3s ease-in-out;
+}
+
+/* Pro mobilní zařízení (šířka menší než 768px) */
+@media (max-width: 1280px) {
+  .image-full-site {
+	display: block;
+    width: 90%; /* Zobrazení na celou šířku obrazovky */
+    margin-left: auto; /* Odstranění levého okraje */
+    margin-right: auto; /* Odstranění pravého okraje */
+    border: none; /* Odstranění rámečku */
+  }
+}
+.image-full-site:hover {
+	border: 5px solid #0fc1d9;
+}
+.image-gallery:hover {
+	border: 5px solid #0fc1d9;
+}
+.image-gallery2:hover {
+	border: 5px solid #0fc1d9;
+}
+.image-gallery {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border: 5px solid transparent;
+  transition: border 0.3s ease-in-out;
+  float: left;
+  width: 45%;
+  padding: 15px;
+  text-align: left;
+  color:#c4c4c4;
+}
+.image-gallery2 {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border: 5px solid transparent;
+  transition: border 0.3s ease-in-out;
+  float: right;
+  width: 45%;
+  padding: 15px;
+  text-align: left;
+  color:#c4c4c4;
+}
+<!--.img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+.img::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.img:hover::before {
+  opacity: 1;
+}-->
+<!--.center {
+<!--.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+.footer {
+	width: 100%;
+	height: 250px;
+	background-color: #333;
+}
+tr {
+			font-family: Arial, Helvetica, sans-serif;
+			text-align: center;
+		}
+		th {
+			font-family: Arial, Helvetica, sans-serif;
+			text-align: center;
+		}
+		th, td {
+			padding: 10px;
+			text-align: center;
+						border: 1px solid;
+		}
+		table {
+			border-collapse: collapse;
+
+			font-family: Arial, Helvetica, sans-serif;
+			margin: auto;
+			width: 50%;
+			padding: 10px;
+			text-align: center;
+		}
+.input-button{
+  background-color: #333;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.submit-button{
+  background-color: #333;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+/* Style the top navigation bar */
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+/* Style the topnav links */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+  float: right;
+  width: 20%; 
+  padding: 15px;
+  padding-right: 120px;
+  text-align: left;
+  color:#c4c4c4;
+}
+.column2 {
+	float: left;
+    width: 40%;
+    padding: 15px;
+	padding-left: 150px;
+    text-align: left;
+    color:#c4c4c4;
+}
+.image2 {
+	float: left;
+    width: 46%;
+    padding: 15px;
+    text-align: left;
+    color:#c4c4c4;
+}
+.image {
+	float: right;
+    width: 46%;
+    padding: 15px;
+    text-align: left;
+    color:#c4c4c4;
+}
+
+/* Clear floats after the columns */
+.row::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+@media screen and (max-width:1760px) {
+  .image2 {
+	float: left;
+    width: 46%;
+    padding: 15px;
+    text-align: left;
+    color:#c4c4c4;
+}
+  .image {
+	float: right;
+    width: 46%;
+    padding: 15px;
+    text-align: left;
+    color:#c4c4c4;
+}
+}
+
+
+@media screen and (max-width:1350px) {
+  .footer {
+	width: 100%;
+	height: 300px;
+	background-color: #333;
+  }
+  .image2 {
+	float: left;
+    width: 46%;
+    padding: 15px;
+    text-align: left;
+    color:#c4c4c4;
+}
+  .image {
+	float: right;
+    width: 46%;
+    padding: 15px;
+    text-align: left;
+    color:#c4c4c4;
+}
+}
+@media screen and (max-width:765px) {
+  .footer {
+	width: 100%;
+	height: 350px;
+	background-color: #333;
+  }
+    .image2 {
+	float: left;
+    width: 100%;
+    padding: 15px;
+    text-align: left;
+    color:#c4c4c4;
+}
+    .image {
+	float: right;
+    width: 100%;
+    padding: 15px;
+    text-align: left;
+    color:#c4c4c4;
+}
+}
+@media screen and (max-width:400px) {
+  .footer {
+	width: 100%;
+	height: 400px;
+	background-color: #333;
+  }
+}
+@media screen and (max-width:750px) {
+.column {
+  float: right;
+  width: 15%; 
+  padding: 15px;
+  text-align: left;
+  color:#c4c4c4;
+}
+.column2 {
+	float: left;
+    width: 40%;
+    padding: 15px;
+    text-align: left;
+    color:#c4c4c4;
+}
+}
+</style>-->

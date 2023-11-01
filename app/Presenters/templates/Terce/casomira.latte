@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{block content}
+
+<h1 class="main-header" style="font-size: 58px">Výsledková listina</h1>
+<br>
+<h2 class="main-header">Kategorie muži</h2>
+<table>
+	<tr>
+		<th>Výsledková Listina</th>
+		<th>Tým</th>
+		<th>Čas</th>
+	</tr>
+	<tr>
+	{foreach $tymy as $tym}
+		<td>{$tym->poradi}</td>
+		<td>{$tym->Tym}</td>
+		<td>{substr($tym->celkove_body->format('%H:%I:%S.%F'),0,11)}</td>
+	</tr>
+	{/foreach}
+</table>
+<br>
+<h2 class="main-header">Kategorie ženy</h2>
+<table>
+	<tr><th>Umístění</th><th>Tým</th><th>Čas</th></tr>
+</table>
+<br>

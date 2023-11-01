@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{* This is the welcome page, you can delete it *}
+
+{block content}
+
+<section id="main-text">
+<div class="main-header" style="font-size: 48px;">
+Popis našeho projektu
+</div>
+<div class="main-header">
+1) Proč?
+</div>
+<div class="main-text">
+Vzhledem k tomu, že se oba dva věnujeme požárnímu sportu a víme jak aktuální časomíra funguje, rozhodli jsme se časomíru vylepšit. Aktuální verze časomíry nepodporuje možnost bezdrátové komunikace, tím pádem je součástí každé přípravy závodů nutnost natáhnout kabeláž ke každému terči. Naše verze časomíry se snaží tuto kabeláž zcela odstranit a nahradit ji bezdrátovou komunikací.
+</div>
+<br>
+<img class="image-full-site" src="/www/pictures/kabel2.jpg">
+<br>
+<div class="main-header">
+2) Jak by to celé mělo fungovat!
+</div>
+<div class="main-text">
+Cílem je ovládat celou časomíru pomocí jednoho notebooku. Jediné co by si uživatel určoval sám, by byl čas kdy se časomíra sepne. Zbytek plánujeme udělat zcela autonomní.<br><b>Funkce zařízení by tedy vypadala asi nějak takto: </b><br>1. Uživatel by odstartoval závod pomocí UI tlačítka na naší webové stránce<br>2. Časomíra by započala a čekala by na okamžik, kdy závodníci sestřelí oba dva terče. V tuto chvíli by měl mít uživatel možnost měření přerušit a tím zaznamenat pokus jako neplatný<br>3. Pokud se pokus zaznamená jako platný (terče odešlou platný čas), čas by se měl zapsat do databáze, kterou můžete již vidět na naší <a href="casomira/index.php">webové stránce</a>. Webová stránka pak sama vyhodnotí pořadí závodních týmů a zobrazí výsledkovou listinu v reálném čase. 
+</div>
+<br>
+<div class="main-text" style="width:100%;">
+<img class="image-full-site image2" src="/www/pictures/Deska1.png">
+<img class="image-full-site image" src="/www/pictures/Deska2.png">
+</div>
+<br>
+<div class="main-text">
+<h2 style="padding-left:150px; padding-right:150px;" class="main-text">Blokové schéma funkčnosti zařízení</h2>
+<img class="image-full-site" src="/www/pictures/blok-schem.png">
+</div>
+<br>
+<br>
+<div class="main-header">
+3)Technické specifikace
+</div>
+<div class="main-text">
+- čeká na vyplnění -
+</div>
+<div class="main-header">
+4)Bezdrátové MiWi připojení
+</div>
+<div class="main-text">
+Komunikace našeho zařízení bude probíhat pomocí MiWi protokolu, který dovoluje bezdrátovou komunikace několik zařízení pomocí "Mesh" komunikace.<br>V podstatě se jedná o bluetooth komunikace, ale bez nutnosti párování zařízení. Pomocí externí antény na naší desce by přenos dat na větší vzdálenosti neměl být problém
+</div>
+<div class="main-header">
+5)Programování a firmware část projektu
+</div>
+<div class="main-text">
+Programování našeho zařízení probíhá pomocí programátoru "Microchip PG16400", který nám umožňuje komunikovat přímo s mikrokontrolérem na naší desce. Díky tomuto zařízení jsme schopni zprovoznit komunikaci se všemi našemi periferiemi jako např. I2C komunikace s monitorovacím obvodem baterie. Sběrnice UART pro vypisování hodnot a sběrnice. SPI pro externí LED pásek. <br>Program pak vytváříme pomocí programu MPLAB X IDE od firmy Microchip. Zde můžete vidět zatím pouze teoretický návrh programu našeho zařízení:<br>
+<h2 class="main-text">Blokové schéma programu zařízení</h2>
+<img class="image-full-site" src="/www/pictures/blok-schem2.png">
+</div>
+<div class="main-header">
+6)Fotogalerie
+</div>
+<!--<div class="main-text" style="height:500px;">
+<img style="height:324;width:257;" class="image-gallery" src="/www/pictures/snap-pg164100.png">
+<img style="height:442;width:285;" class="image-gallery" src="/www/pictures/terc1.png">
+<img style="height:406;width:208;" class="image-gallery2" src="/www/pictures/snap-pg164100.png">
+<img style="height:406;width:208;" class="image-gallery2" src="/www/pictures/terc2.png">
+</div>
+<div class="main-text" style="height:800px;">
+<img class="image-full-site image2" src="/www/pictures/blok-schema3.png">
+<img class="image-full-site image" src="/www/pictures/blok-schema4.png">-->
+</div>
+</section>
