@@ -10,50 +10,35 @@ use Nette\Application\UI\Form;
 
 final class TercePresenter extends Nette\Application\UI\Presenter
 {
-        //TEST FORMULAR
-        protected function createComponentRegistrationForm(): Form
-            {
-                $form = new Form;
-                $form->addInteger('id', 'ID Týmu:');
-                //$form->addPassword('time', 'Čas:');
-                $form->addSubmit('send', 'Registrovat');
-                $form->onSuccess[] = [$this, 'formSucceeded'];
-                return $form;
-            }
+        protected function createComponentCommentForm(): Form
+        {
+                $form = new Form; // means Nette\Application\UI\Form
 
-        public function formSucceeded(Form $form, $data): void
-            {
-                $input_id = $form->getComponent('id');
-                //echo($input_time = $form->getComponent('time'));
-            }
+                $form->addInteger('id_tymu', 'ID Týmu:')
+                    ->setRequired();
 
+                $form->addTextArea('celkove_body', 'Čas:')
+                    ->setRequired();
 
-        /*protected function createComponentMyForm()
-            {
-                $form = new \Nette\Application\UI\Form;
-        
-                $form->addText('cislo', 'Kladné číslo:')
-                    ->setRequired('Zadejte kladné číslo.')
-                    ->addRule(\Nette\Forms\Form::INTEGER, 'Zadejte platné číslo.');
-        
-                $form->addSubmit('submit', 'Odeslat');
-        
-                $form->onSuccess[] = [$this, 'processForm'];
-        
-                return $form;
-            }
-        
-        public function processForm(\Nette\Application\UI\Form $form, $values)
-            {
-                // Zde můžete provést zápis do databáze
-                $cislo = $values['cislo'];
+                $form->addSubmit('send', 'Nahrát do databáze');
             
-                $database = $this->context->getByType(\Nette\Database\Context::class);
-                $database->table('test')->insert(['id_tymu' => $cislo]);
-            
-                $this->flashMessage('Číslo bylo úspěšně uloženo do databáze.', 'success'); // Použijte 'success' jako klíč zprávy
-                $this->redirect('this');
-            }*/
+                $form->onSuccess[] = $this->commentFormSucceeded(...);
+
+                return $form;
+                
+
+        }
+        private function commentFormSucceeded(\stdClass $data): void
+        {
+
+            $this->database->table('vysledky_zeny')->insert([
+                'id_tymu' => $data->id_tymu,
+                'celkove_body' => $data->celkove_body,
+            ]);
+
+            $this->flashMessage('Data byla nahrána', 'success');
+            $this->redirect('this');
+        }
             
     public function __construct(private Nette\Database\Explorer $database)
     {
