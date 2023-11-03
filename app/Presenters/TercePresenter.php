@@ -26,7 +26,8 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                 $form->addSelect('tym', 'Tým:', $tymy)
                     ->setRequired();
 
-                $form->addTextArea('celkove_body', 'Čas:')
+                $form->addText('celkove_body', 'Čas:')
+                    ->addRule($form::Pattern, 'Chyba vstupu', '[0-9]{2}:[0-5][0-9].[0-9]{2}')
                     ->setRequired();
 
                 $form->addSubmit('send', 'Nahrát do databáze');
