@@ -10,11 +10,20 @@ use Nette\Application\UI\Form;
 
 final class TercePresenter extends Nette\Application\UI\Presenter
 {
-        protected function createComponentCommentForm(): Form
+        protected function createComponentUploadForm(): Form
         {
+                $results_tymy = $this->database->query("SELECT * FROM tymy");
+                $tymy = [];
+                foreach($results_tymy as $tym){
+                    $tymy [$tym->id] = $tym->Tym;
+                }
+
                 $form = new Form; // means Nette\Application\UI\Form
 
-                $form->addInteger('id_tymu', 'ID Týmu:')
+                /*$form->addInteger('id_tymu', 'ID Týmu:')
+                    ->setRequired();*/
+
+                $form->addSelect('tym', 'Tým:', $tymy)
                     ->setRequired();
 
                 $form->addTextArea('celkove_body', 'Čas:')
@@ -32,9 +41,14 @@ final class TercePresenter extends Nette\Application\UI\Presenter
         {
 
             $this->database->table('vysledky_zeny')->insert([
-                'id_tymu' => $data->id_tymu,
+                'id_tymu' => $data->tym,
                 'celkove_body' => $data->celkove_body,
             ]);
+
+            /*$this->database->query(
+                "SELECT Tym, celkove_body,
+                AS 'poradi' FROM vysledky_zeny AS V
+                LEFT JOIN tymy AS T ON V.id_tymu = T.id;");*/
 
             $this->flashMessage('Data byla nahrána', 'success');
             $this->redirect('this');

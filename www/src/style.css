@@ -12,6 +12,31 @@ body {
   background: #ededed;
   margin: 0 auto;
 }
+
+input {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #f2f2f2;
+  text-decoration: none;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+}
+
+select {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #f2f2f2;
+  text-decoration: none;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
