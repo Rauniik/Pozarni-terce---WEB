@@ -23,7 +23,7 @@ final class TestPresenter extends Nette\Application\UI\Presenter
             $form->addInteger('id_tymu', 'ID Týmu:')
                 ->setRequired();
 
-            $form->addTextArea('celkove_body', 'Čas:')
+            $form->addTextArea('cas', 'Čas:')
                 ->setRequired();
 
             $form->addSubmit('send', 'Nahrát do databáze');
@@ -39,7 +39,7 @@ final class TestPresenter extends Nette\Application\UI\Presenter
 
         $this->database->table('vysledky_zeny')->insert([
             'id_tymu' => $data->id_tymu,
-            'celkove_body' => $data->celkove_body,
+            'cas' => $data->cas,
         ]);
 
         $this->flashMessage('Data byla nahrána', 'success');

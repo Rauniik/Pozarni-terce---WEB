@@ -14,7 +14,7 @@
 	{foreach $tymy as $tym}
 		<td>{$tym->poradi}</td>
 		<td>{$tym->Tym}</td>
-		<td>{substr($tym->celkove_body->format('%I:%S.%F'),0,8)}</td>
+		<td>{substr($tym->cas->format('%I:%S.%F'),0,8)}</td>
 	</tr>
 	{/foreach}
 </table>
@@ -30,7 +30,7 @@
 	{foreach $tymy_zeny as $tym}
 		<td>{$tym->poradi}</td>
 		<td>{$tym->Tym}</td>
-		<td>{substr($tym->celkove_body->format('%I:%S.%F'),0,8)}</td>
+		<td>{substr($tym->cas->format('%I:%S.%F'),0,8)}</td>
 	</tr>
 	{/foreach}
 </table>
@@ -43,8 +43,8 @@
 	</div>
 	<br>
 	<div>
-		<label n:name=celkove_body>Čas: <input type="text" n:name=celkove_body required placeholder="00:00.00" oninput="formatTimeInput(this)" inputmode="numeric" step="1"></label>
-		<span class=error n:ifcontent>{inputError celkove_body}</span>
+		<label n:name=cas>Čas: <input type="text" n:name=cas required placeholder="00:00.00" oninput="formatTimeInput(this)" inputmode="numeric" step="1"></label>
+		<span class=error n:ifcontent>{inputError cas}</span>
 	</div>
 	<script>
         function formatTimeInput(input) {

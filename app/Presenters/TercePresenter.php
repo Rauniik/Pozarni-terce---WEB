@@ -26,7 +26,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                 $form->addSelect('tym', 'Tým:', $tymy)
                     ->setRequired();
 
-                $form->addText('celkove_body', 'Čas:')
+                $form->addText('cas', 'Čas:')
                     ->addRule($form::Pattern, 'Chyba vstupu', '[0-9]{2}:[0-5][0-9].[0-9]{2}')
                     ->setRequired();
 
@@ -43,11 +43,11 @@ final class TercePresenter extends Nette\Application\UI\Presenter
 
             $this->database->table('vysledky_zeny')->insert([
                 'id_tymu' => $data->tym,
-                'celkove_body' => $data->celkove_body,
+                'cas' => $data->cas,
             ]);
 
             /*$this->database->query(
-                "SELECT Tym, celkove_body,
+                "SELECT Tym, cas,
                 AS 'poradi' FROM vysledky_zeny AS V
                 LEFT JOIN tymy AS T ON V.id_tymu = T.id;");*/
 
@@ -62,17 +62,17 @@ final class TercePresenter extends Nette\Application\UI\Presenter
     public function renderCasomira() {
 
         $results = $this->database->fetchAll(
-			"SELECT Tym, celkove_body,
+			"SELECT Tym, cas,
 			RANK() OVER(
-				ORDER BY celkove_body ASC)
+				ORDER BY cas ASC)
 			AS 'poradi' FROM vysledky AS V
             LEFT JOIN tymy AS T ON V.id_tymu = T.id;");
 		$this->template->tymy = $results;
         
         $results_zeny = $this->database->fetchAll(
-			"SELECT Tym, celkove_body,
+			"SELECT Tym, cas,
 			RANK() OVER(
-				ORDER BY celkove_body ASC)
+				ORDER BY cas ASC)
 			AS 'poradi' FROM vysledky_zeny AS VZ
             LEFT JOIN tymy AS T ON VZ.id_tymu = T.id;");
 		$this->template->tymy_zeny = $results_zeny;
