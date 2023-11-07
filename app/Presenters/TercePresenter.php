@@ -10,7 +10,53 @@ use Nette\Application\UI\Form;
 
 final class TercePresenter extends Nette\Application\UI\Presenter
 {
-        protected function createComponentUploadForm(): Form
+    protected function createComponentUploadForm(): Form
+    {
+            $results_tymy = $this->database->query("SELECT * FROM tymy");
+            $tymy = [];
+            foreach($results_tymy as $tym){
+                $tymy [$tym->id] = $tym->Tym;
+            }
+
+            $form = new Form; // means Nette\Application\UI\Form
+
+            /*$form->addInteger('id_tymu', 'ID Týmu:')
+                ->setRequired();*/
+
+            $form->addSelect('tym', 'Tým:', $tymy)
+                ->setRequired();
+
+            $form->addText('cas', 'Čas:')
+                ->addRule($form::Pattern, 'Chyba vstupu', '[0-9]{2}:[0-5][0-9]:[0-5][0-9].[0-9]{2}')
+                ->setRequired();
+
+            $form->addSubmit('send', 'Nahrát do databáze');
+        
+            $form->onSuccess[] = $this->commentFormSucceeded(...);
+
+            return $form;
+            
+
+    }
+    private function commentFormSucceeded(\stdClass $data): void
+    {
+
+        $this->database->table('vysledky')->insert([
+            'id_tymu' => $data->tym,
+            'cas' => $data->cas,
+        ]);
+
+        /*$this->database->query(
+            "SELECT Tym, cas,
+            AS 'poradi' FROM vysledky_zeny AS V
+            LEFT JOIN tymy AS T ON V.id_tymu = T.id;");*/
+
+        $this->flashMessage('Data byla nahrána', 'success');
+        $this->redirect('this');
+    }
+
+
+        protected function createComponentUploadFormZeny(): Form
         {
                 $results_tymy = $this->database->query("SELECT * FROM tymy");
                 $tymy = [];
@@ -27,18 +73,18 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                     ->setRequired();
 
                 $form->addText('cas', 'Čas:')
-                    ->addRule($form::Pattern, 'Chyba vstupu', '[0-9]{2}:[0-5][0-9].[0-9]{2}')
+                    ->addRule($form::Pattern, 'Chyba vstupu', '[0-9]{2}:[0-5][0-9]:[0-5][0-9].[0-9]{2}')
                     ->setRequired();
 
                 $form->addSubmit('send', 'Nahrát do databáze');
             
-                $form->onSuccess[] = $this->commentFormSucceeded(...);
+                $form->onSuccess[] = $this->commentFormSucceededZeny(...);
 
                 return $form;
                 
 
         }
-        private function commentFormSucceeded(\stdClass $data): void
+        private function commentFormSucceededZeny(\stdClass $data): void
         {
 
             $this->database->table('vysledky_zeny')->insert([
