@@ -16,7 +16,7 @@ final class TestPresenter extends Nette\Application\UI\Presenter
     {
     }
 
-    protected function createComponentCommentForm(): Form
+    /*protected function createComponentCommentForm(): Form
     {
             $form = new Form; // means Nette\Application\UI\Form
 
@@ -44,7 +44,18 @@ final class TestPresenter extends Nette\Application\UI\Presenter
 
         $this->flashMessage('Data byla nahrána', 'success');
         $this->redirect('this');
-    }
+    }*/
 
+    public function renderTest() {
 
+        $results = $this->database->fetchAll(
+			"SELECT Tym, cas,
+			RANK() OVER(
+				ORDER BY cas ASC)
+			AS 'poradi' FROM vysledky AS V
+            LEFT JOIN tymy AS T ON V.id_tymu = T.id;");
+		$this->template->tymy = $results;
+
+        $this->template->actionName = $this->getPresenter()->action;
+            }
 }

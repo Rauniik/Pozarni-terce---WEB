@@ -109,18 +109,18 @@ final class TercePresenter extends Nette\Application\UI\Presenter
 
         $results = $this->database->fetchAll(
 			"SELECT Tym, cas,
-			RANK() OVER(
-				ORDER BY cas ASC)
-			AS 'poradi' FROM vysledky AS V
-            LEFT JOIN tymy AS T ON V.id_tymu = T.id;");
+                RANK() OVER(ORDER BY cas ASC) AS 'poradi'
+            FROM vysledky AS V
+            LEFT JOIN tymy AS T ON V.id_tymu = T.id
+            WHERE V.id_kategorie = 1;");
 		$this->template->tymy = $results;
         
         $results_zeny = $this->database->fetchAll(
 			"SELECT Tym, cas,
-			RANK() OVER(
-				ORDER BY cas ASC)
-			AS 'poradi' FROM vysledky_zeny AS VZ
-            LEFT JOIN tymy AS T ON VZ.id_tymu = T.id;");
+                RANK() OVER(ORDER BY cas ASC) AS 'poradi'
+            FROM vysledky AS V
+            LEFT JOIN tymy AS T ON V.id_tymu = T.id
+            WHERE V.id_kategorie = 2;");
 		$this->template->tymy_zeny = $results_zeny;
         
 

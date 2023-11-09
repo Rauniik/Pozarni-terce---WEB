@@ -1,3 +1,16 @@
-<h2>Vložte nový příspěvek</h2>
-
-{control commentForm}
+<h2 class="main-header">Kategorie muži</h2>
+<table>
+	<tr>
+		<th>Výsledková Listina</th>
+		<th>Tým</th>
+		<th>Čas</th>
+	</tr>
+	<tr>
+	{foreach $tymy as $tym}
+		<td>{$tym->poradi}</td>
+		<td>{$tym->Tym}</td>
+		<td>{substr($tym->cas->format('%I:%S.%F'),0,8)}</td>
+	</tr>
+	{/foreach}
+</table>
+<br>

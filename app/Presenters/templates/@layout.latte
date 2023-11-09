@@ -20,8 +20,10 @@
 	</h1>
 	<br>
 	<ul class="nav-menu" id="menu">
-	<li><a n:href="Home:default" {if $actionName == 'default'}class="active"{/if}>Projekt</a></li>
+  <li><a n:href="Home:default" {if $actionName == 'default'}class="active"{/if}>Projekt</a></li>
 	<li><a n:href="Terce:casomira" {if $actionName == 'casomira'}class="active"{/if}>Časomíra</a></li>
+	<li><a n:href="Terce:tymy" {if $actionName == 'tymy'}class="active"{/if}>Týmy</a></li>
+  <li class="logout"><a href="Login:default">Login</a></li>
 	</ul>
 
 	{include content}
