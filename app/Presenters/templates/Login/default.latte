@@ -1,0 +1,18 @@
+{block content}
+<h1 class="main-header">Přihlášení</h1>
+<form n:name=uploadFormLogin class="main-text">
+	<div>
+		<label n:name=username>Uživatelské jméno: <input type="text" n:name=username></label>
+		<span class=error n:ifcontent>{inputError username}</span>
+	</div>
+	<br>
+    <div>
+		<label n:name=password>Heslo: <input class="input" n:name=password></label>
+		<span class=error n:ifcontent>{inputError password}</span>
+	</div>
+    <br>
+	<div>
+		<input style="background-color: lightgreen;" n:name=send class="btn btn-default">
+	</div>
+</form>
+{/block}

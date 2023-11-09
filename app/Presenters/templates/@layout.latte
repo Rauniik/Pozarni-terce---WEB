@@ -20,10 +20,14 @@
 	</h1>
 	<br>
 	<ul class="nav-menu" id="menu">
-  <li><a n:href="Home:default" {if $actionName == 'default'}class="active"{/if}>Projekt</a></li>
-	<li><a n:href="Terce:casomira" {if $actionName == 'casomira'}class="active"{/if}>Časomíra</a></li>
-	<li><a n:href="Terce:tymy" {if $actionName == 'tymy'}class="active"{/if}>Týmy</a></li>
-  <li class="logout"><a href="Login:default">Login</a></li>
+  <li><a n:href="Home:default" {if $presenter->linkCurrent}class="active"{/if}>Projekt</a></li>
+  <li><a n:href="Terce:casomira" {if $presenter->linkCurrent}class="active"{/if}>Časomíra</a></li>
+  <li><a n:href="Terce:tymy" {if $presenter->linkCurrent}class="active"{/if}>Týmy</a></li>
+  {if $user->isLoggedIn()}
+  <li class="logout"><a n:href="Login:out">Odhlásit</a></li>
+  {else}
+  <li class="logout"><a n:href="Login:default">Přihlásit</a></li>
+  {/if}
 	</ul>
 
 	{include content}

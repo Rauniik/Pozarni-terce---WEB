@@ -1,2 +1,18 @@
 {block content}
+<h1 class="main-header">Registrace týmů</h1>
+<form n:name=uploadFormKategorie class="main-text">
+	<div>
+		<label n:name=nazev>Název týmu: <input type="text" n:name=nazev></label>
+		<span class=error n:ifcontent>{inputError nazev}</span>
+	</div>
+	<br>
+    <div>
+		<label n:name=kat>Kategorie: <select class="input" n:name=kat></select></label>
+		<span class=error n:ifcontent>{inputError kat}</span>
+	</div>
+    <br>
+	<div>
+		<input style="background-color: lightgreen;" n:name=send class="btn btn-default">
+	</div>
+</form>
 {/block}
