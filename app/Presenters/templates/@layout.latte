@@ -28,6 +28,9 @@
   {else}
   <li class="logout"><a n:href="Login:default">Přihlásit</a></li>
   {/if}
+  {if $user->getIdentity()->getData()['name'] == 'admin'}
+  <li class="admin"><a n:href="Admin:"{if $presenter->linkCurrent}class="active"{/if}>Administrace</a></li>
+  {/if}
 	</ul>
 
 	{include content}

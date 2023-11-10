@@ -15,4 +15,19 @@
 		<input style="background-color: lightgreen;" n:name=send class="btn btn-default">
 	</div>
 </form>
+<h2 class="main-header">Týmy</h2>
+<table>
+	<tr>
+		<th>Tým</th>
+		<th>Kategorie</th>
+		<th>Smazat</th>
+	</tr>
+	{foreach $editor_tymy as $tym}
+	<tr>
+		<td>{$tym->Tym}</td>
+		<td>{$tym->kategorie}</td>
+		<td><a class="delete" n:href="Terce:deleteTeam $tym->id">Smazat</a></td>
+	</tr>
+	{/foreach}
+</table>
 {/block}

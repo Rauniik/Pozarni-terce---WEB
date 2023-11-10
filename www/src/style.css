@@ -1,13 +1,23 @@
 * {
 	font-family: Arial, Helvetica, sans-serif;
 }
-        .nav-menu li.logout {
-            float: right;
-        }
-        .nav-menu li.logout a {
-            background-color: red;
-            color: white;
-        }
+.nav-menu li.logout {
+  float: right;
+}
+.nav-menu li.logout a {
+  background-color: red;
+  color: white;
+}
+.nav-menu li.admin {
+  float: right;
+  background-color: #333;
+  color: white;
+}
+.nav-menu li.admin a {
+  background-color: #333;
+  color: white;
+  float: right; 
+}
 body {
   background: #ededed;
   margin: 0 auto;
@@ -209,6 +219,22 @@ tr {
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 12px;
+}
+
+.delete:link, .delete:visited {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #f2f2f2;
+  text-decoration: none;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+}
+
+.delete:hover, .delete:active {
+  background-color: white;
 }
 
 .submit-button{

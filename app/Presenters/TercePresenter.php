@@ -13,17 +13,24 @@ final class TercePresenter extends Nette\Application\UI\Presenter
     public function startup(): void
     {
 	    parent::startup();
-
 	    if (!$this->getUser()->isLoggedIn()) {
 		    $this->redirect('Login:');
 	    }
+        /*if ($this->user->getIdentity()->getData()['name'] != 'admin' || 'user'){
+            $this->redirect('Home:');
+        }*/
     }
     protected function createComponentUploadForm(): Form
-    {
-            $results_tymy = $this->database->query("SELECT * FROM tymy WHERE id_kategorie = 1;");
-            $tymy = [];
-            foreach($results_tymy as $tym){
-                $tymy [$tym->id] = $tym->Tym;
+    {       
+            $result_kategorie = $this->database->query("SELECT * FROM kategorie");
+            $kat = [];
+            foreach($result_kategorie as $kategorie){
+                $results_tymy = $this->database->query("SELECT * FROM tymy WHERE id_kategorie = ? ORDER BY Tym ASC;", $kategorie->id);
+                $tymy = [];
+                foreach($results_tymy as $tym){
+                    $tymy [$tym->id] = $tym->Tym;
+                }
+                $kat [$kategorie->kategorie] = $tymy;
             }
 
             $form = new Form; // means Nette\Application\UI\Form
@@ -31,11 +38,14 @@ final class TercePresenter extends Nette\Application\UI\Presenter
             /*$form->addInteger('id_tymu', 'ID Týmu:')
                 ->setRequired();*/
 
-            $form->addSelect('tym', 'Tým:', $tymy)
+            $form->addSelect('tym', 'Tým:', $kat)
                 ->setRequired();
 
             $form->addText('cas', 'Čas:')
                 ->addRule($form::Pattern, 'Chyba vstupu', '[0-9]{2}:[0-5][0-9]:[0-5][0-9].[0-9]{2}')
+                ->setRequired();
+
+            $form->addHidden('id_uzivatel')
                 ->setRequired();
 
             $form->addSubmit('send', 'Nahrát do databáze');
@@ -48,11 +58,12 @@ final class TercePresenter extends Nette\Application\UI\Presenter
     }
     private function commentFormSucceeded(\stdClass $data): void
     {
-
+        $tym = $this->database->table('tymy')->get($data->tym);
         $this->database->table('vysledky')->insert([
             'id_tymu' => $data->tym,
             'cas' => $data->cas,
-            'id_kategorie' => 1
+            'id_kategorie' => $tym->id_kategorie,
+            'id_uzivatel' => $data->id_uzivatel
         ]);
 
         /*$this->database->query(
@@ -118,24 +129,41 @@ final class TercePresenter extends Nette\Application\UI\Presenter
     public function renderCasomira() {
 
         $results = $this->database->fetchAll(
-			"SELECT Tym, cas,
+			"SELECT V.id, Tym, cas,
                 RANK() OVER(ORDER BY cas ASC) AS 'poradi'
             FROM vysledky AS V
             LEFT JOIN tymy AS T ON V.id_tymu = T.id
-            WHERE V.id_kategorie = 1;");
+            WHERE V.id_kategorie = 1 AND id_uzivatel = ?;", $this->user->getIdentity()->id);
 		$this->template->tymy = $results;
         
         $results_zeny = $this->database->fetchAll(
-			"SELECT Tym, cas,
+			"SELECT V.id, Tym, cas,
                 RANK() OVER(ORDER BY cas ASC) AS 'poradi'
             FROM vysledky AS V
             LEFT JOIN tymy AS T ON V.id_tymu = T.id
-            WHERE V.id_kategorie = 2;");
+            WHERE V.id_kategorie = 2 AND id_uzivatel = ?;", $this->user->getIdentity()->id);
 		$this->template->tymy_zeny = $results_zeny;
         
 
         $this->template->actionName = $this->getPresenter()->action;
 
+    }
+    public function renderTymy(){
+
+        $results_tymy = $this->database->fetchAll(
+			"SELECT T.id, Tym, id_kategorie, kategorie FROM tymy AS T LEFT JOIN kategorie AS K ON T.id_kategorie = K.id ORDER BY K.id ASC, Tym ASC");
+		$this->template->editor_tymy = $results_tymy;
+    }
+
+    public function actionDeleteTime($id){
+
+        $this->database->table('vysledky')->where('id',$id)->delete();
+        $this->redirect('Terce:casomira');
+    }
+    public function actionDeleteTeam($id){
+
+        $this->database->table('tymy')->where('id',$id)->delete();
+        $this->redirect('Terce:tymy');
     }
 
 

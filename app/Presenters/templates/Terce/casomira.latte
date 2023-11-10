@@ -4,17 +4,37 @@
 <h1 class="main-header" style="font-size: 58px">Výsledková listina</h1>
 <br>
 <h2 class="main-header">Kategorie muži</h2>
-<table>
+<table n:if="count($tymy)">
 	<tr>
 		<th>Výsledková Listina</th>
 		<th>Tým</th>
 		<th>Čas</th>
+		<th>Smazat</th>
 	</tr>
-	<tr>
 	{foreach $tymy as $tym}
+	<tr>
 		<td>{$tym->poradi}</td>
 		<td>{$tym->Tym}</td>
 		<td>{substr($tym->cas->format('%I:%S.%F'),0,8)}</td>
+		<td><a class="delete" n:href="Terce:deleteTime $tym->id">Smazat</a></td>
+	</tr>
+	{/foreach}
+</table>
+<br>
+<h2 class="main-header" n:if="count($tymy_zeny)">Kategorie ženy</h2>
+<table n:if="count($tymy_zeny)">
+	<tr>
+		<th>Výsledková Listina</th>
+		<th>Tým</th>
+		<th>Čas</th>
+		<th>Smazat</th>
+	</tr>
+	{foreach $tymy_zeny as $tym}
+	<tr>
+		<td>{$tym->poradi}</td>
+		<td>{$tym->Tym}</td>
+		<td>{substr($tym->cas->format('%I:%S.%F'),0,8)}</td>
+		<td><a class="delete" n:href="Terce:deleteTime $tym->id">Smazat</a></td>
 	</tr>
 	{/foreach}
 </table>
@@ -48,57 +68,7 @@
             input.value = value;
         }
     </script>
-	<br>
-	<div>
-		<input style="background-color: lightgreen;" n:name=send class="btn btn-default">
-	</div>
-</form>
-<br>
-<h2 class="main-header">Kategorie ženy</h2>
-<table>
-	<tr>
-		<th>Výsledková Listina</th>
-		<th>Tým</th>
-		<th>Čas</th>
-	</tr>
-	<tr>
-	{foreach $tymy_zeny as $tym}
-		<td>{$tym->poradi}</td>
-		<td>{$tym->Tym}</td>
-		<td>{substr($tym->cas->format('%I:%S.%F'),0,8)}</td>
-	</tr>
-	{/foreach}
-</table>
-<br>
-<h1 class="main-header">Vložení dat</h1>
-<form n:name=uploadFormZeny class="main-text">
-	<div>
-		<label n:name=tym>Název týmu: <select class="input" n:name=tym></select></label>
-		<span class=error n:ifcontent>{inputError tym}</span>
-	</div>
-	<br>
-	<div>
-		<label n:name=cas>Čas: <input type="text" n:name=cas required placeholder="00:00:00.00" oninput="formatTimeInput(this)" inputmode="numeric" step="1"></label>
-		<span class=error n:ifcontent>{inputError cas}</span>
-	</div>
-	<script>
-        function formatTimeInput(input) {
-            let value = input.value.replace(/\D/g, ''); // Odebrání všech nečíselných znaků
-            if (value.length > 8) {
-                value = value.substring(0, 8); // Omezení délky na 6 znaků
-            }
-            if (value.length > 0) {
-                value = value.substring(0, 0) + '00:' + value.substring(2); // Přidání první dvojtečky
-            }
-            if (value.length > 5) {
-                value = value.substring(0, 5) + ':' + value.substring(5); // Přidání druhé dvojtečky
-            }
-			if (value.length > 8) {
-                value = value.substring(0, 8) + '.' + value.substring(8); // Přidání druhé dvojtečky
-            }
-            input.value = value;
-        }
-    </script>
+		<input n:name="id_uzivatel" value="{$user->getIdentity()->id}">
 	<br>
 	<div>
 		<input style="background-color: lightgreen;" n:name=send class="btn btn-default">

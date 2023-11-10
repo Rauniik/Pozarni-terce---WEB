@@ -51,6 +51,33 @@ final class LoginPresenter extends Nette\Application\UI\Presenter
             $this->redirect('Home:');
         }
     }
+
+    protected function createComponentUploadFormRegister(): Form
+    {
+
+            $form = new Form;
+
+            $form->addText('password', 'Password:')
+                ->setRequired(' ');
+
+            $form->addText('username', 'Login:')
+                ->setRequired(' ');
+
+            $form->addSubmit('send', 'Registrovat');
+        
+            $form->onSuccess[] = $this->commentFormSucceededRegister(...);
+
+            return $form;
+            
+
+    }
+    private function commentFormSucceededRegister(\stdClass $data): void
+    {
+        $this->database->table('uzivatel')->insert([
+            'username' => $data->username,
+            'password' => $data->password,
+        ]);
+    }
     
     public function actionOut(): void
     {
