@@ -16,7 +16,7 @@ final class AdminPresenter extends Nette\Application\UI\Presenter
 		    $this->redirect('Login:');
 	    }
         if ($this->user->getIdentity()->getData()['name'] != 'Rauniik'){
-            if($this->user->getIdentity()->getData()['name'] != 'admin'){
+            if($this->user->getIdentity()->getData()['name'] != 'Petr'){
             
             $this->redirect('Home:');
             }
