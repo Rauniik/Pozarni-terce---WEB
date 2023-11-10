@@ -73,7 +73,7 @@ final class LoginPresenter extends Nette\Application\UI\Presenter
         $results_username = $this->database->query('SELECT username FROM uzivatel');
             $this->database->table('uzivatel')->insert([
                 'username' => $data->username,
-                'password' => $data->password,
+                'password' => password_hash($data->password, PASSWORD_DEFAULT),
             ]);
         $this->redirect('Login:');
 
