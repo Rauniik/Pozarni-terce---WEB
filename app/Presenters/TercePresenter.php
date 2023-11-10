@@ -25,7 +25,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
             $result_kategorie = $this->database->query("SELECT * FROM kategorie");
             $kat = [];
             foreach($result_kategorie as $kategorie){
-                $results_tymy = $this->database->query("SELECT * FROM tymy WHERE id_kategorie = ? ORDER BY Tym ASC;", $kategorie->id);
+                $results_tymy = $this->database->query("SELECT * FROM tymy WHERE id_kategorie = ? AND id_uzivatele = ? ORDER BY Tym ASC;", $kategorie->id, $this->user->getIdentity()->id);
                 $tymy = [];
                 foreach($results_tymy as $tym){
                     $tymy [$tym->id] = $tym->Tym;
@@ -74,53 +74,6 @@ final class TercePresenter extends Nette\Application\UI\Presenter
         $this->flashMessage('Data byla nahrána', 'success');
         $this->redirect('this');
     }
-
-
-        protected function createComponentUploadFormZeny(): Form
-        {
-                $results_tymy = $this->database->query("SELECT * FROM tymy WHERE id_kategorie = 2;");
-                $tymy = [];
-                foreach($results_tymy as $tym){
-                    $tymy [$tym->id] = $tym->Tym;
-                }
-
-                $form = new Form; // means Nette\Application\UI\Form
-
-                /*$form->addInteger('id_tymu', 'ID Týmu:')
-                    ->setRequired();*/
-
-                $form->addSelect('tym', 'Tým:', $tymy)
-                    ->setRequired();
-
-                $form->addText('cas', 'Čas:')
-                    ->addRule($form::Pattern, 'Chyba vstupu', '[0-9]{2}:[0-5][0-9]:[0-5][0-9].[0-9]{2}')
-                    ->setRequired();
-
-                $form->addSubmit('send', 'Nahrát do databáze');
-            
-                $form->onSuccess[] = $this->commentFormSucceededZeny(...);
-
-                return $form;
-                
-
-        }
-        private function commentFormSucceededZeny(\stdClass $data): void
-        {
-
-            $this->database->table('vysledky_zeny')->insert([
-                'id_tymu' => $data->tym,
-                'cas' => $data->cas,
-                'id_kategorie' => 2
-            ]);
-
-            /*$this->database->query(
-                "SELECT Tym, cas,
-                AS 'poradi' FROM vysledky_zeny AS V
-                LEFT JOIN tymy AS T ON V.id_tymu = T.id;");*/
-
-            $this->flashMessage('Data byla nahrána', 'success');
-            $this->redirect('this');
-        }
             
     public function __construct(private Nette\Database\Explorer $database)
     {
@@ -151,7 +104,12 @@ final class TercePresenter extends Nette\Application\UI\Presenter
     public function renderTymy(){
 
         $results_tymy = $this->database->fetchAll(
-			"SELECT T.id, Tym, id_kategorie, kategorie FROM tymy AS T LEFT JOIN kategorie AS K ON T.id_kategorie = K.id ORDER BY K.id ASC, Tym ASC");
+			"SELECT T.id, Tym, id_kategorie, kategorie 
+            FROM tymy AS T 
+            LEFT JOIN kategorie AS K ON T.id_kategorie = K.id 
+            WHERE T.id_uzivatele = ? 
+            ORDER BY K.id ASC, Tym ASC
+            ", $this->user->getIdentity()->id);
 		$this->template->editor_tymy = $results_tymy;
     }
 
@@ -186,6 +144,9 @@ final class TercePresenter extends Nette\Application\UI\Presenter
 
             $form->addText('nazev', 'Název:')
                 ->setRequired();
+    
+            /*$form->addHidden('id_uzivatele')
+                ->setRequired();*/
 
             $form->addSubmit('send', 'Registrovat');
         
@@ -201,6 +162,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
         $this->database->table('tymy')->insert([
             'Tym' => $data->nazev,
             'id_kategorie' => $data->kat,
+            'id_uzivatele' => $this->user->getIdentity()->id,
         ]);
 
         /*$this->database->query(

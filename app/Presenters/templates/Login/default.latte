@@ -7,7 +7,10 @@
 	</div>
 	<br>
     <div>
-		<label n:name=password>Heslo: <input class="input" n:name=password></label>
+		<label for="password" style="position: relative;">Heslo:
+			<input type="password" id="password" class="input" name="password">
+			<span toggle="#password" class="eye field-icon"></span>
+		</label>			
 		<span class=error n:ifcontent>{inputError password}</span>
 	</div>
     <br>
@@ -15,6 +18,20 @@
 		<input style="background-color: lightgreen;" n:name=send class="btn btn-default">
 	</div>
 </form>
+<script>
+	document.querySelectorAll('.eye').forEach(function(eye) {
+    eye.addEventListener('click', function() {
+        const input = document.querySelector(eye.getAttribute('toggle'));
+        if (input.getAttribute('type') == 'password') {
+            input.setAttribute('type', 'text');
+            eye.style.color = '#0095ff';
+        } else {
+            input.setAttribute('type', 'password');
+            eye.style.color = '#555';
+        }
+    });
+});
+</script>
 <br>
 <h2 class="main-header">Nebo se můžete registrovat
 	<br>

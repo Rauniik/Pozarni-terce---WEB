@@ -1,16 +1,35 @@
 {block content}
+<meta name="autocomplete" content="off">
+
 <h1 class="main-header">Registrace</h1>
-<form n:name=uploadFormRegister class="main-text">
+<form n:name=uploadFormRegister class="main-text" autocomplete="off">
 	<div>
 		<label n:name=username>Uživatelské jméno: <input type="text" n:name=username></label>
 	</div>
 	<br>
     <div>
-		<label n:name=password>Heslo: <input class="input" n:name=password></label>
+		<label for="password" style="position: relative;">Heslo:
+			<input type="password" id="password" class="input" n:name="password">
+			<span toggle="#password" class="eye field-icon"></span>
+		</label>
 	</div>
     <br>
 	<div>
 		<input style="background-color: lightgreen;" n:name=send class="btn btn-default">
 	</div>
 </form>
+<script>
+	document.querySelectorAll('.eye').forEach(function(eye) {
+    eye.addEventListener('click', function() {
+        const input = document.querySelector(eye.getAttribute('toggle'));
+        if (input.getAttribute('type') == 'password') {
+            input.setAttribute('type', 'text');
+            eye.style.color = '#0095ff';
+        } else {
+            input.setAttribute('type', 'password');
+            eye.style.color = '#555';
+        }
+    });
+});
+</script>
 {/block}

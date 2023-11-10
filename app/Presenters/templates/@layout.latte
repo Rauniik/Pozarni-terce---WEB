@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
 
-  	<link rel="icon" type="image/x-icon" href="https://www.cestakvitezstvi.cz/layout/logo.png">
+  	<link rel="icon" type="image/x-icon" href="https://www.cestakvitezstvi.cz/pictures/logo.png">
 	<link rel="stylesheet" href="{$basePath}/src/style.css">
 
 	<title>{ifset title}{include title|stripHtml} | {/ifset}Bezdrátové časomíry</title>
@@ -12,8 +12,8 @@
 
 <body>
 
-	<img style="float:right;width:96px;height:96px;padding:5px;" src="https://www.cestakvitezstvi.cz/layout/logo.png">
-  	<img style="float:left;width:96px;height:96px;padding:5px;" src="https://www.cestakvitezstvi.cz/layout/logo.png">
+	<img style="float:right;width:96px;height:96px;padding:5px;" src="https://www.cestakvitezstvi.cz/pictures/logo.png">
+  	<img style="float:left;width:96px;height:96px;padding:5px;" src="https://www.cestakvitezstvi.cz/pictures/logo.png">
 
 	<h1 class="nadpis">
 	Bezdrátová časomíra pro požární terče
@@ -28,7 +28,7 @@
   {else}
   <li class="logout"><a n:href="Login:default">Přihlásit</a></li>
   {/if}
-  {if $user->getIdentity()->getData()['name'] == 'admin'}
+  {if $user->isLoggedIn()}
   <li class="admin"><a n:href="Admin:"{if $presenter->linkCurrent}class="active"{/if}>Administrace</a></li>
   {/if}
 	</ul>

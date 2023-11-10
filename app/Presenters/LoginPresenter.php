@@ -10,10 +10,7 @@ use Nette\Application\UI\Form;
 final class LoginPresenter extends Nette\Application\UI\Presenter
 {
 
-    public function __construct()
-    {
-
-    }
+    public function __construct(private Nette\Database\Explorer $database){}
 
     public function renderDefault() {
 
@@ -73,10 +70,13 @@ final class LoginPresenter extends Nette\Application\UI\Presenter
     }
     private function commentFormSucceededRegister(\stdClass $data): void
     {
-        $this->database->table('uzivatel')->insert([
-            'username' => $data->username,
-            'password' => $data->password,
-        ]);
+        $results_username = $this->database->query('SELECT username FROM uzivatel');
+            $this->database->table('uzivatel')->insert([
+                'username' => $data->username,
+                'password' => $data->password,
+            ]);
+        $this->redirect('Login:');
+
     }
     
     public function actionOut(): void

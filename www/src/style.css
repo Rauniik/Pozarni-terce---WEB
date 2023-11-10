@@ -394,3 +394,21 @@ tr {
     color:#c4c4c4;
 }
 }
+.eye {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.eye::before {
+    content: '\1F441'; /* Unicode znak pro oko */
+    font-size: 18px;
+    color: #555;
+}
+
+input[type="password"] {
+    padding-right: 30px;
+}
+
