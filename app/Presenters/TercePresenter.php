@@ -96,6 +96,14 @@ final class TercePresenter extends Nette\Application\UI\Presenter
             LEFT JOIN tymy AS T ON V.id_tymu = T.id
             WHERE V.id_kategorie = 2 AND id_uzivatel = ?;", $this->user->getIdentity()->id);
 		$this->template->tymy_zeny = $results_zeny;
+
+        $results_deti = $this->database->fetchAll(
+			"SELECT V.id, Tym, cas,
+                RANK() OVER(ORDER BY cas ASC) AS 'poradi'
+            FROM vysledky AS V
+            LEFT JOIN tymy AS T ON V.id_tymu = T.id
+            WHERE V.id_kategorie = 3 AND id_uzivatel = ?;", $this->user->getIdentity()->id);
+		$this->template->tymy_deti = $results_deti;
         
 
         $this->template->actionName = $this->getPresenter()->action;

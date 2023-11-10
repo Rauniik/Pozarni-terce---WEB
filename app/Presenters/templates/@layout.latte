@@ -3,7 +3,6 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-
   	<link rel="icon" type="image/x-icon" href="https://www.cestakvitezstvi.cz/pictures/logo.png">
 	<link rel="stylesheet" href="{$basePath}/src/style.css">
 
@@ -21,8 +20,13 @@
 	<br>
 	<ul class="nav-menu" id="menu">
   <li><a n:href="Home:default" {if $presenter->linkCurrent}class="active"{/if}>Projekt</a></li>
-  <li><a n:href="Terce:casomira" {if $presenter->linkCurrent}class="active"{/if}>Časomíra</a></li>
-  <li><a n:href="Terce:tymy" {if $presenter->linkCurrent}class="active"{/if}>Týmy</a></li>
+  <li class="dropdown">
+    <a href="javascript:void(0)" class="dropbtn">Časomíra</a>
+    <div class="dropdown-content">
+      <a n:href="Terce:casomira" {if $presenter->linkCurrent}class="active"{/if}>Výsledková listina</a>
+      <a n:href="Terce:tymy" {if $presenter->linkCurrent}class="active"{/if}>Týmy</a>
+    </div>
+  </li>
   {if $user->isLoggedIn()}
   <li class="logout"><a n:href="Login:out">Odhlásit</a></li>
   {else}

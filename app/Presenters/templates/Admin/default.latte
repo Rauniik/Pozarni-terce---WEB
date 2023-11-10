@@ -1,1 +1,17 @@
 {block content}
+<h2 class="main-header">Uživatelé</h2>
+<table>
+	<tr>
+		<th>ID</th>
+		<th>Username</th>
+		<th>Smazat</th>
+	</tr>
+	{foreach $users as $uzivatel}
+	<tr>
+		<td>{$uzivatel->id}</td>
+		<td>{$uzivatel->username}</td>
+		<td><a class="delete" n:href="Admin:deleteUser $uzivatel->id">Smazat</a></td>
+	</tr>
+	{/foreach}
+</table>
+{/block}

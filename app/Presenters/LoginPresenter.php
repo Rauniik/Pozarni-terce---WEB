@@ -70,12 +70,24 @@ final class LoginPresenter extends Nette\Application\UI\Presenter
     }
     private function commentFormSucceededRegister(\stdClass $data): void
     {
-        $results_username = $this->database->query('SELECT username FROM uzivatel');
+        $usernameExists = $this->database->table('uzivatel')->where('username', $data->username)->fetch();
+
+        if ($usernameExists) {
+            echo '<h1 class="main-header" style="color:red; background-color:black">Uživatel s tímto jménem již existuje.</h1>';
+        } else {
+            // Uživatelské jméno je unikátní, můžete provést vložení do tabulky
             $this->database->table('uzivatel')->insert([
                 'username' => $data->username,
                 'password' => password_hash($data->password, PASSWORD_DEFAULT),
             ]);
-        $this->redirect('Login:');
+            $this->redirect('Login:');
+        }
+        /*$results_username = $this->database->query('SELECT username FROM uzivatel');
+            $this->database->table('uzivatel')->insert([
+                'username' => $data->username,
+                'password' => password_hash($data->password, PASSWORD_DEFAULT),
+            ]);
+        $this->redirect('Login:');*/
 
     }
     

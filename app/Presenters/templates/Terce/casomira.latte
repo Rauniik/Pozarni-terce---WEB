@@ -39,6 +39,24 @@
 	{/foreach}
 </table>
 <br>
+<h2 class="main-header" n:if="count($tymy_deti)">Kategorie děti</h2>
+<table n:if="count($tymy_deti)">
+	<tr>
+		<th>Výsledková Listina</th>
+		<th>Tým</th>
+		<th>Čas</th>
+		<th>Smazat</th>
+	</tr>
+	{foreach $tymy_deti as $tym}
+	<tr>
+		<td>{$tym->poradi}</td>
+		<td>{$tym->Tym}</td>
+		<td>{substr($tym->cas->format('%I:%S.%F'),0,8)}</td>
+		<td><a class="delete" n:href="Terce:deleteTime $tym->id">Smazat</a></td>
+	</tr>
+	{/foreach}
+</table>
+<br>
 <h1 class="main-header">Vložení dat</h1>
 <form n:name=uploadForm class="main-text">
 	<div>
