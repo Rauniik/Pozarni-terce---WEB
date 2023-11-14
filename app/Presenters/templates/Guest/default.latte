@@ -1,0 +1,63 @@
+{block content}
+<h2 n:if="count($users)" class="main-header">Výběr uživatele</h2>
+<table n:if="count($users)">
+	<tr>
+		<th>Uživatel</th>
+		<th>Výběr</th>
+	</tr>
+	{foreach $users as $username}
+	<tr>
+		<td>{$username->username}</td>
+		<td><a class="delete" n:href="Guest: $username->id">Vybrat</a></td>
+	</tr>
+	{/foreach}
+</table>
+<br>
+<h2 n:if="count($tymy)" class="main-header">Kategorie muži</h2>
+<table n:if="count($tymy)">
+	<tr>
+		<th>Výsledková Listina</th>
+		<th>Tým</th>
+		<th>Čas</th>
+	</tr>
+	{foreach $tymy as $tym}
+	<tr>
+		<td>{$tym->poradi}</td>
+		<td>{$tym->Tym}</td>
+		<td>{substr($tym->cas->format('%I:%S.%F'),0,8)}</td>
+	</tr>
+	{/foreach}
+</table>
+<br>
+<h2 class="main-header" n:if="count($tymy_zeny)">Kategorie ženy</h2>
+<table n:if="count($tymy_zeny)">
+	<tr>
+		<th>Výsledková Listina</th>
+		<th>Tým</th>
+		<th>Čas</th>
+	</tr>
+	{foreach $tymy_zeny as $tym}
+	<tr>
+		<td>{$tym->poradi}</td>
+		<td>{$tym->Tym}</td>
+		<td>{substr($tym->cas->format('%I:%S.%F'),0,8)}</td>
+	</tr>
+	{/foreach}
+</table>
+<br>
+<h2 class="main-header" n:if="count($tymy_deti)">Kategorie děti</h2>
+<table n:if="count($tymy_deti)">
+	<tr>
+		<th>Výsledková Listina</th>
+		<th>Tým</th>
+		<th>Čas</th>
+	</tr>
+	{foreach $tymy_deti as $tym}
+	<tr>
+		<td>{$tym->poradi}</td>
+		<td>{$tym->Tym}</td>
+		<td>{substr($tym->cas->format('%I:%S.%F'),0,8)}</td>
+	</tr>
+	{/foreach}
+</table>
+{/block}

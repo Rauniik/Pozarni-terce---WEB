@@ -20,6 +20,7 @@
 	<br>
 	<ul class="nav-menu" id="menu">
   <li><a n:href="Home:default" {if $presenter->linkCurrent}class="active"{/if}>Projekt</a></li>
+  {if $user->isLoggedIn()}
   <li class="dropdown">
     <a href="javascript:void(0)" class="dropbtn">Časomíra</a>
     <div class="dropdown-content">
@@ -27,6 +28,9 @@
       <a n:href="Terce:tymy" {if $presenter->linkCurrent}class="active"{/if}>Týmy</a>
     </div>
   </li>
+  {else}
+  <li><a n:href="Guest:" {if $presenter->linkCurrent}class="active"{/if}>Časomíra</a></li>
+  {/if}
   {if $user->isLoggedIn()}
   <li class="logout"><a n:href="Login:out">Odhlásit</a></li>
   {else}
