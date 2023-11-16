@@ -22,7 +22,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
     }
     protected function createComponentUploadForm(): Form
     {       
-            $result_kategorie = $this->database->query("SELECT * FROM kategorie");
+            $result_kategorie = $this->database->query("SELECT * FROM kategorie WHERE id_uzivatele = ?", $this->user->getIdentity()->id);
             $kat = [];
             foreach($result_kategorie as $kategorie){
                 $results_tymy = $this->database->query("SELECT * FROM tymy WHERE id_kategorie = ? AND id_uzivatele = ? ORDER BY Tym ASC;", $kategorie->id, $this->user->getIdentity()->id);
@@ -86,7 +86,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
         "SELECT * FROM tymy WHERE id_uzivatele = ?;", $this->user->getIdentity()->id);
 
         $resultsData = $this->database->query(
-            'SELECT cas, id_uzivatel, V.id_tymu, V.id_kategorie, V.id, 
+            'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
                 RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
                 t.Tym AS nazev_tymu,
                 v.cas AS vysledny_cas,

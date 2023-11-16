@@ -21,14 +21,14 @@ final class GuestPresenter extends Nette\Application\UI\Presenter
         $this->template->actionName = $this->getPresenter()->action;
 
         $results_users = $this->database->fetchAll(
-			"SELECT id, username FROM uzivatel WHERE id > 0");
+			"SELECT id, username FROM uzivatel WHERE id > 3");
 		$this->template->users = $results_users;
 
             $teamsData = $this->database->fetchAll(
                 "SELECT * FROM tymy WHERE id_uzivatele = ?;", $id);
     
             $resultsData = $this->database->query(
-                'SELECT cas, id_uzivatel, V.id_tymu, V.id_kategorie, V.id, 
+                'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
                     RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
                     t.Tym AS nazev_tymu,
                     v.cas AS vysledny_cas,
