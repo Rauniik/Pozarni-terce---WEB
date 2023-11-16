@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Presenters;
 
 use Nette;
+use Nette\Application\UI\Form;
 
 
 final class AdminPresenter extends Nette\Application\UI\Presenter
@@ -42,6 +43,32 @@ final class AdminPresenter extends Nette\Application\UI\Presenter
 
         $this->database->table('uzivatel')->where('id',$id)->delete();
         $this->redirect('Admin:');
+    }
+
+    protected function createComponentEditGuest(): Form
+    {
+
+            $form = new Form; // means Nette\Application\UI\Form
+
+            $form->addInteger('int', 'Viditelnost uživatelů:')
+                ->setRequired();
+
+            $form->addSubmit('send', 'Nastavit');
+        
+            $form->onSuccess[] = $this->commentFormSucceededEditGuest(...);
+
+            return $form;
+            
+
+    }
+    private function commentFormSucceededEditGuest(\stdClass $data): void
+    {
+        $this->database->table('admin')->where('id', 1)->update([
+            'guest_visibility' => $data->int,
+        ]);
+
+        $this->flashMessage('Data byla nahrána', 'success');
+        $this->redirect('this');
     }
 
 
