@@ -1,0 +1,25 @@
+{block content}
+<h1 class="main-header">Vytváření kategorií</h1>
+<form n:name=uploadFormKategorie class="main-text">
+	<div>
+		<label n:name=nazev>Název týmu: <input type="text" n:name=nazev></label>
+	</div>
+    <br>
+	<div>
+		<input style="background-color: lightgreen;" n:name=send class="btn btn-default">
+	</div>
+</form>
+<h2 class="main-header">Kategorie</h2>
+<table>
+	<tr>
+		<th>Kategorie</th>
+		<th>Smazat</th>
+	</tr>
+	{foreach $editor_kat as $kat}
+	<tr>
+		<td>{$kat->kategorie}</td>
+		<td><a class="delete" n:href="Terce:deleteKategorie $kat->id">Smazat</a></td>
+	</tr>
+	{/foreach}
+</table>
+{/block}

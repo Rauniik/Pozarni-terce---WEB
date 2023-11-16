@@ -1,16 +1,18 @@
-<h2 class="main-header">Kategorie muži</h2>
-<table>
-	<tr>
-		<th>Výsledková Listina</th>
-		<th>Tým</th>
-		<th>Čas</th>
-	</tr>
-	<tr>
-	{foreach $tymy as $tym}
-		<td>{$tym->poradi}</td>
-		<td>{$tym->Tym}</td>
-		<td>{substr($tym->cas->format('%I:%S.%F'),0,8)}</td>
-	</tr>
-	{/foreach}
-</table>
-<br>
+{block content}
+    <table>
+        <tr>
+            <th>Umístění</th>
+            <th>Název týmu</th>
+            <th>Výsledný čas</th>
+            <th>Akce</th>
+        </tr>
+        {foreach $results as $result}
+            <tr>
+                <td>{$result->umisteni}</td>
+                <td>{$result->nazev_tymu}</td>
+                <td>{$result->cas->format('%H:%I:%S')}</td>
+                <td><a n:href="deleteTime $result->vysledek_id">Smazat</a></td>
+            </tr>
+        {/foreach}
+    </table>
+{/block}

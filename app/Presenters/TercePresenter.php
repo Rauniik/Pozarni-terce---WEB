@@ -79,35 +79,33 @@ final class TercePresenter extends Nette\Application\UI\Presenter
     {
     }
 
-    public function renderCasomira() {
+    public function renderCasomira() 
+    {
+        // Získejte data pro vytvoření tabulek
+        $teamsData = $this->database->fetchAll(
+        "SELECT * FROM tymy WHERE id_uzivatele = ?;", $this->user->getIdentity()->id);
 
-        $results = $this->database->fetchAll(
-			"SELECT V.id, Tym, cas,
-                RANK() OVER(ORDER BY cas ASC) AS 'poradi'
-            FROM vysledky AS V
-            LEFT JOIN tymy AS T ON V.id_tymu = T.id
-            WHERE V.id_kategorie = 1 AND id_uzivatel = ?;", $this->user->getIdentity()->id);
-		$this->template->tymy = $results;
-        
-        $results_zeny = $this->database->fetchAll(
-			"SELECT V.id, Tym, cas,
-                RANK() OVER(ORDER BY cas ASC) AS 'poradi'
-            FROM vysledky AS V
-            LEFT JOIN tymy AS T ON V.id_tymu = T.id
-            WHERE V.id_kategorie = 2 AND id_uzivatel = ?;", $this->user->getIdentity()->id);
-		$this->template->tymy_zeny = $results_zeny;
+        $resultsData = $this->database->query(
+            'SELECT cas, id_uzivatel, V.id_tymu, V.id_kategorie, V.id, 
+                RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
+                t.Tym AS nazev_tymu,
+                v.cas AS vysledny_cas,
+                v.id AS vysledek_id
+            FROM
+                tymy t
+            JOIN
+                vysledky v ON t.id = v.id_tymu
+            WHERE
+                id_uzivatel = ?
+            ORDER BY
+                v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
 
-        $results_deti = $this->database->fetchAll(
-			"SELECT V.id, Tym, cas,
-                RANK() OVER(ORDER BY cas ASC) AS 'poradi'
-            FROM vysledky AS V
-            LEFT JOIN tymy AS T ON V.id_tymu = T.id
-            WHERE V.id_kategorie = 3 AND id_uzivatel = ?;", $this->user->getIdentity()->id);
-		$this->template->tymy_deti = $results_deti;
-        
+        $categoriesData = $this->database->table('kategorie')->fetchAll();
 
-        $this->template->actionName = $this->getPresenter()->action;
-
+        // Předáme data do šablony
+        $this->template->teamsData = $teamsData;
+        $this->template->resultsData = $resultsData;
+        $this->template->categoriesData = $categoriesData;
     }
     public function renderTymy(){
 
@@ -134,9 +132,9 @@ final class TercePresenter extends Nette\Application\UI\Presenter
 
 
     //Zápis týmů
-    protected function createComponentUploadFormKategorie(): Form
+    protected function createComponentUploadFormTymy(): Form
     {
-            $results_kategorie = $this->database->query("SELECT * FROM kategorie");
+            $results_kategorie = $this->database->query("SELECT * FROM kategorie WHERE id_uzivatele = ?", $this->user->getIdentity()->id);
             $kategorie = [];
             foreach($results_kategorie as $kat){
                 $kategorie [$kat->id] = $kat->kategorie;
@@ -158,13 +156,13 @@ final class TercePresenter extends Nette\Application\UI\Presenter
 
             $form->addSubmit('send', 'Registrovat');
         
-            $form->onSuccess[] = $this->commentFormSucceededKategorie(...);
+            $form->onSuccess[] = $this->commentFormSucceededTymy(...);
 
             return $form;
             
 
     }
-    private function commentFormSucceededKategorie(\stdClass $data): void
+    private function commentFormSucceededTymy(\stdClass $data): void
     {
 
         $this->database->table('tymy')->insert([
@@ -180,6 +178,57 @@ final class TercePresenter extends Nette\Application\UI\Presenter
 
         $this->flashMessage('Data byla nahrána', 'success');
         $this->redirect('this');
+    }
+
+    //Zápis kategorií
+    protected function createComponentUploadFormKategorie(): Form
+    {
+
+            $form = new Form; // means Nette\Application\UI\Form
+
+            $form->addText('nazev', 'Název kategorie:')
+                ->setRequired();
+    
+            /*$form->addHidden('id_uzivatele')
+                ->setRequired();*/
+
+            $form->addSubmit('send', 'Registrovat');
+        
+            $form->onSuccess[] = $this->commentFormSucceededKategorie(...);
+
+            return $form;
+            
+
+    }
+    private function commentFormSucceededKategorie(\stdClass $data): void
+    {
+
+        $this->database->table('kategorie')->insert([
+            'kategorie' => $data->nazev,
+            'id_uzivatele' => $this->user->getIdentity()->id,
+        ]);
+
+        /*$this->database->query(
+            "SELECT Tym, cas,
+            AS 'poradi' FROM vysledky_zeny AS V
+            LEFT JOIN tymy AS T ON V.id_tymu = T.id;");*/
+
+        $this->flashMessage('Data byla nahrána', 'success');
+        $this->redirect('this');
+    }
+
+    public function actionDeleteKategorie($id){
+
+        $this->database->table('kategorie')->where('id',$id)->delete();
+        $this->redirect('Terce:kategorie');
+    }
+
+    public function renderKategorie(){
+
+        $results_kat = $this->database->fetchAll(
+			"SELECT * FROM kategorie WHERE id_uzivatele = ?
+            ", $this->user->getIdentity()->id);
+		$this->template->editor_kat = $results_kat;
     }
 
 
