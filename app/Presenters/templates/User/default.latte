@@ -1,0 +1,22 @@
+{block content}
+<h2 class="main-header">Mé informace</h2>
+<table>
+	<tr>
+		<th>ID Uživatele</th>
+		<th>Uživatelské jméno</th>
+		<th>Smazat Profil</th>
+	</tr>
+	{foreach $users as $uzivatel}
+	<tr>
+		<td>{$uzivatel->id}</td>
+		<td>{$uzivatel->username}</td>
+		<td><a class="delete" n:href="User:deleteUser $uzivatel->id">Smazat</a></td>
+	</tr>
+	{/foreach}
+</table>
+<div class="main-text">
+<h2>Odkaz na moji výsledkovou listinu</h2>
+<a class="delete" href="{link Guest:default, id => $uzivatel->id}">Odkaz na stránku s ID 1</a>
+<p>Odkaz na webovou stránku jako text:<br><p style="font-style: italic;">https://www.cestakvitezstvi.cz/guest/default/{$uzivatel->id}</p></p>
+</div>
+{/block}

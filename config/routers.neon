@@ -1,0 +1,5 @@
+router:
+    Guest:Presenter:action:
+        path: '/guest/<id>'
+        presenter: 'Guest'
+        action: 'default'

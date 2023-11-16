@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Presenters;
 
 use Nette;
+use Nette\Application\Responses\TextResponse;
 
 
 final class GuestPresenter extends Nette\Application\UI\Presenter
@@ -16,6 +17,7 @@ final class GuestPresenter extends Nette\Application\UI\Presenter
     }
 
     public function renderDefault($id) {
+
 
         $inputValue = $this->getSession()->getSection('shared')->inputValue;
 
@@ -66,6 +68,8 @@ final class GuestPresenter extends Nette\Application\UI\Presenter
     public function actionselectUser(){
     
     }
+
+
 
 
 }
