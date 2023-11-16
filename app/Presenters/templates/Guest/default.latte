@@ -34,6 +34,7 @@
 {/if}
 {/foreach}
 <br>
+<h2 n:if="count($users)==0" class="main-header">Žádná data</h2>
 <h2 n:if="count($users)" class="main-header">Výběr uživatele</h2>
 <table n:if="count($users)">
 	<tr>
