@@ -28,7 +28,7 @@
 					<tr>
 						<td>{$result->poradi}</td>
 						<td>{$team->Tym}</td>
-						<td>{$result->cas->format('%H:%I:%S')}</td>
+						<td>{$result->vysledny_cas->format('%H:%I:%S')}</td>
 						<td><a class="delete" n:href="deleteTime $result->id">Smazat</a></td>
 					</tr>
 				{/if}
@@ -37,6 +37,13 @@
 	</table>
 {/if}
 {/foreach}
+<br>
+<div class="main-text">
+<a class="delete" n:href="Terce:casomira typ_vypoctu:max">MAX</a>
+<a class="delete" n:href="Terce:casomira typ_vypoctu:min">MIN</a>
+<a class="delete" n:href="Terce:casomira typ_vypoctu:prum">PRŮMĚR</a>
+<a class="delete" style="background-color: red;" n:href="Terce:casomira typ_vypoctu:sum">SOUČET</a>
+</div>
 <br>
 <h1 class="main-header">Vložení dat</h1>
 <form n:name=uploadForm class="main-text">

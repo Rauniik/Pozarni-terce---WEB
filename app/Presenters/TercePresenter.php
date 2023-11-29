@@ -79,26 +79,116 @@ final class TercePresenter extends Nette\Application\UI\Presenter
     {
     }
 
-    public function renderCasomira() 
+    public function renderCasomira($typ_vypoctu)
     {
         // Získejte data pro vytvoření tabulek
+        
         $teamsData = $this->database->fetchAll(
         "SELECT * FROM tymy WHERE id_uzivatele = ?;", $this->user->getIdentity()->id);
-
-        $resultsData = $this->database->query(
-            'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
+        $this->database->table('admin')->where('id_uzivatele=?', $this->user->getIdentity()->id)->update([
+            'vypocet' => $typ_vypoctu,
+        ]);
+        if($typ_vypoctu=='min'){
+            $resultsData = $this->database->query(
+                /*'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
+                    RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
+                    t.Tym AS nazev_tymu,
+                    v.cas AS vysledny_cas,
+                    v.id AS vysledek_id
+                FROM
+                    tymy t
+                JOIN
+                    vysledky v ON t.id = v.id_tymu
+                WHERE
+                    id_uzivatel = ?
+                ORDER BY
+                    v.id_kategorie, v.cas;'*/
+                'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
+                RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
+                t.Tym AS nazev_tymu,
+                MIN(v.cas) AS vysledny_cas,
+                v.id AS vysledek_id
+                FROM
+                    tymy t
+                JOIN
+                    vysledky v ON t.id = v.id_tymu
+                WHERE
+                    id_uzivatel = ?
+                GROUP BY
+                    v.id_tymu
+                ORDER BY
+                    v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
+        }
+        else if($typ_vypoctu=='max'){
+            $resultsData = $this->database->query(
+                'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
+                RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
+                t.Tym AS nazev_tymu,
+                MAX(v.cas) AS vysledny_cas,
+                v.id AS vysledek_id
+                FROM
+                    tymy t
+                JOIN
+                    vysledky v ON t.id = v.id_tymu
+                WHERE
+                    id_uzivatel = ?
+                GROUP BY
+                    v.id_tymu
+                ORDER BY
+                    v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
+        }
+        else if($typ_vypoctu=='prum'){
+            $resultsData = $this->database->query(
+                'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
+                RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
+                t.Tym AS nazev_tymu,
+                cast(AVG(v.cas) AS time(2))AS vysledny_cas,
+                v.id AS vysledek_id
+                FROM
+                    tymy t
+                JOIN
+                    vysledky v ON t.id = v.id_tymu
+                WHERE
+                    id_uzivatel = ?
+                GROUP BY
+                    v.id_tymu
+                ORDER BY
+                    v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
+        }
+        else if($typ_vypoctu=='sum'){
+            $resultsData = $this->database->query(
+                'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
+                RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
+                t.Tym AS nazev_tymu,
+                cast(SUM(v.cas)AS time) AS vysledny_cas,
+                v.id AS vysledek_id
+                FROM
+                    tymy t
+                JOIN
+                    vysledky v ON t.id = v.id_tymu
+                WHERE
+                    id_uzivatel = ?
+                GROUP BY
+                    v.id_tymu
+                ORDER BY
+                    v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
+        }
+        else{
+            $resultsData = $this->database->query(
+                'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
                 RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
                 t.Tym AS nazev_tymu,
                 v.cas AS vysledny_cas,
                 v.id AS vysledek_id
-            FROM
-                tymy t
-            JOIN
-                vysledky v ON t.id = v.id_tymu
-            WHERE
-                id_uzivatel = ?
-            ORDER BY
-                v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
+                FROM
+                    tymy t
+                JOIN
+                    vysledky v ON t.id = v.id_tymu
+                WHERE
+                    id_uzivatel = ?
+                ORDER BY
+                    v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
+        }
 
         $categoriesData = $this->database->table('kategorie')->fetchAll();
 

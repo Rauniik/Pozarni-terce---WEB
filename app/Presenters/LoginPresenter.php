@@ -42,7 +42,7 @@ final class LoginPresenter extends Nette\Application\UI\Presenter
     {
         try {
             $this->getUser()->login($data->username, $data->password);
-            $this->redirect('Terce:casomira');
+            $this->redirect('Terce:casomira', 'min');
     
         } catch (Nette\Security\AuthenticationException $e) {
             $this->redirect('Home:');
@@ -76,9 +76,15 @@ final class LoginPresenter extends Nette\Application\UI\Presenter
             echo '<h1 class="main-header" style="color:red; background-color:black">Uživatel s tímto jménem již existuje.</h1>';
         } else {
             // Uživatelské jméno je unikátní, můžete provést vložení do tabulky
-            $this->database->table('uzivatel')->insert([
+            /*$this->database->table('uzivatel')->insert([
                 'username' => $data->username,
                 'password' => password_hash($data->password, PASSWORD_DEFAULT),
+            ]);*/
+            $this->database->query(
+                'INSERT INTO uzivatel (username, password) VALUES (?, ?);', $data->username, password_hash($data->password, PASSWORD_DEFAULT)
+            );
+            $this->database->table('admin')->insert([
+                'id_uzivatele' => $this->database->getInsertId(),
             ]);
             $this->redirect('Login:');
         }
