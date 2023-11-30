@@ -85,6 +85,7 @@ final class LoginPresenter extends Nette\Application\UI\Presenter
             );
             $this->database->table('admin')->insert([
                 'id_uzivatele' => $this->database->getInsertId(),
+                'vypocet' => 'vse',
             ]);
             $this->redirect('Login:');
         }

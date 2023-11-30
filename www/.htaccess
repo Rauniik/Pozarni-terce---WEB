@@ -16,8 +16,8 @@ Require all granted
 	# RewriteBase /
 
 	# Force usage of HTTPS (secure connection). Uncomment if you have SSL setup.
-	# RewriteCond %{HTTPS} !on
-	# RewriteRule .? https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+	RewriteCond %{HTTPS} !on
+	RewriteRule .? https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
 	# Prevent access to files that start with a dot (like .htaccess or .git)
 	# Exception made for ".well-known" directory used for domain verification and other protocols

@@ -323,6 +323,22 @@ tr {
     text-align: left;
     color:#c4c4c4;
 }
+.column_footer {
+  float: right;
+  width: 20%; 
+  padding: 15px;
+  padding-right: 120px;
+  text-align: left;
+  color:#c4c4c4;
+}
+.column2_footer {
+	float: left;
+    width: 40%;
+    padding: 15px;
+	padding-left: 150px;
+    text-align: left;
+    color:#c4c4c4;
+}
 .image2 {
 	float: left;
     width: 46%;
@@ -403,15 +419,8 @@ tr {
     text-align: left;
     color:#c4c4c4;
 }
-}
-@media screen and (max-width:400px) {
-  .footer {
-	width: 100%;
-	height: 400px;
-	background-color: #333;
-  }
-}
-@media screen and (max-width:750px) {
+
+@media screen and (max-width:1280px) {
 .column {
   float: right;
   width: 15%; 
@@ -425,6 +434,26 @@ tr {
     padding: 15px;
     text-align: left;
     color:#c4c4c4;
+}
+.column_footer {
+  float: center;
+  width: 95%; 
+  padding: 15px;
+  text-align: center;
+  color:#c4c4c4;
+}
+.column2_footer {
+	float: center;
+    width: 95%;
+    padding: 15px;
+    text-align: center;
+    color:#c4c4c4;
+}
+.footer {
+	width: 100%;
+	height: 800px;
+	background-color: #333;
+  }
 }
 }
 .eye {

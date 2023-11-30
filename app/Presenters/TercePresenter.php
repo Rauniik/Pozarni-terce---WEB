@@ -115,7 +115,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                 WHERE
                     id_uzivatel = ?
                 GROUP BY
-                    v.id_tymu
+                    v.id_tymu, v.id_kategorie, v.id, t.Tym, cas
                 ORDER BY
                     v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
         }
@@ -133,7 +133,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                 WHERE
                     id_uzivatel = ?
                 GROUP BY
-                    v.id_tymu
+                    v.id_tymu, v.id_kategorie, v.id, t.Tym, cas
                 ORDER BY
                     v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
         }
@@ -151,7 +151,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                 WHERE
                     id_uzivatel = ?
                 GROUP BY
-                    v.id_tymu
+                    v.id_tymu, v.id_kategorie, v.id, t.Tym, cas
                 ORDER BY
                     v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
         }
@@ -160,7 +160,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                 'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
                 RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
                 t.Tym AS nazev_tymu,
-                cast(SUM(v.cas)AS time) AS vysledny_cas,
+                SEC_TO_TIME(SUM(TIME_TO_SEC(v.cas))) AS vysledny_cas,
                 v.id AS vysledek_id
                 FROM
                     tymy t
@@ -169,7 +169,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                 WHERE
                     id_uzivatel = ?
                 GROUP BY
-                    v.id_tymu
+                    v.id_tymu, v.id_kategorie, v.id, t.Tym, cas
                 ORDER BY
                     v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
         }
@@ -212,7 +212,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
     public function actionDeleteTime($id){
 
         $this->database->table('vysledky')->where('id',$id)->delete();
-        $this->redirect('Terce:casomira');
+        $this->redirect('Terce:casomira typ_vypoctu:min');
     }
     public function actionDeleteTeam($id){
 
