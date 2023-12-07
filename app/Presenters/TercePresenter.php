@@ -61,7 +61,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
         $tym = $this->database->table('tymy')->get($data->tym);
         $this->database->table('vysledky')->insert([
             'id_tymu' => $data->tym,
-            'cas_float' => $data->cas,
+            'cas' => $data->cas,
             'id_kategorie' => $tym->id_kategorie,
             'id_uzivatel' => $data->id_uzivatel
         ]);
