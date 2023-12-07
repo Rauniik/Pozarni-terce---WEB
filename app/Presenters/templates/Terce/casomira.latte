@@ -28,7 +28,7 @@
 					<tr>
 						<td>{$result->poradi}</td>
 						<td>{$team->Tym}</td>
-						<td>{$result->vysledny_cas->format('%H:%I:%S')}</td>
+						<td>{gmdate('H:i:s.v', (int)$result->vysledny_cas)}</td>
 						<td><a class="delete" n:href="deleteTime $result->id">Smazat</a></td>
 					</tr>
 				{/if}

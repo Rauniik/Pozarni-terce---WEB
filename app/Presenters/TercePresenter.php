@@ -61,7 +61,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
         $tym = $this->database->table('tymy')->get($data->tym);
         $this->database->table('vysledky')->insert([
             'id_tymu' => $data->tym,
-            'cas' => $data->cas,
+            'cas_float' => $data->cas,
             'id_kategorie' => $tym->id_kategorie,
             'id_uzivatel' => $data->id_uzivatel
         ]);
@@ -88,6 +88,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
         $this->database->table('admin')->where('id_uzivatele=?', $this->user->getIdentity()->id)->update([
             'vypocet' => $typ_vypoctu,
         ]);
+        $this->database->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
         if($typ_vypoctu=='min'){
             $resultsData = $this->database->query(
                 /*'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
@@ -106,7 +107,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                 'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
                 RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
                 t.Tym AS nazev_tymu,
-                MIN(v.cas) AS vysledny_cas,
+                MIN(TIME_TO_SEC(v.cas)) AS vysledny_cas,
                 v.id AS vysledek_id
                 FROM
                     tymy t
@@ -115,7 +116,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                 WHERE
                     id_uzivatel = ?
                 GROUP BY
-                    v.id_tymu, v.id_kategorie, v.id, t.Tym, cas
+                    v.id_tymu
                 ORDER BY
                     v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
         }
@@ -124,7 +125,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                 'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
                 RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
                 t.Tym AS nazev_tymu,
-                MAX(v.cas) AS vysledny_cas,
+                MAX(TIME_TO_SEC(v.cas)) AS vysledny_cas,
                 v.id AS vysledek_id
                 FROM
                     tymy t
@@ -133,16 +134,17 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                 WHERE
                     id_uzivatel = ?
                 GROUP BY
-                    v.id_tymu, v.id_kategorie, v.id, t.Tym, cas
+                    v.id_tymu
                 ORDER BY
                     v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
         }
         else if($typ_vypoctu=='prum'){
+
             $resultsData = $this->database->query(
                 'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
                 RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
                 t.Tym AS nazev_tymu,
-                cast(AVG(v.cas) AS time(2))AS vysledny_cas,
+                AVG(TIME_TO_SEC(v.cas)) AS vysledny_cas,
                 v.id AS vysledek_id
                 FROM
                     tymy t
@@ -151,7 +153,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                 WHERE
                     id_uzivatel = ?
                 GROUP BY
-                    v.id_tymu, v.id_kategorie, v.id, t.Tym, cas
+                    v.id_tymu
                 ORDER BY
                     v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
         }
@@ -160,7 +162,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                 'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
                 RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
                 t.Tym AS nazev_tymu,
-                SEC_TO_TIME(SUM(TIME_TO_SEC(v.cas))) AS vysledny_cas,
+                SUM(TIME_TO_SEC(v.cas)) AS vysledny_cas,
                 v.id AS vysledek_id
                 FROM
                     tymy t
@@ -169,16 +171,16 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                 WHERE
                     id_uzivatel = ?
                 GROUP BY
-                    v.id_tymu, v.id_kategorie, v.id, t.Tym, cas
+                    v.id_tymu
                 ORDER BY
                     v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
-        }
+        } //SEC_TO_TIME(SUM(TIME_TO_SEC(v.cas))) AS vysledny_cas
         else{
             $resultsData = $this->database->query(
                 'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
                 RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
                 t.Tym AS nazev_tymu,
-                v.cas AS vysledny_cas,
+                TIME_TO_SEC(v.cas) AS vysledny_cas,
                 v.id AS vysledek_id
                 FROM
                     tymy t
