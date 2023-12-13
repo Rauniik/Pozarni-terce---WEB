@@ -22,13 +22,13 @@
 			<th>Výsledný čas</th>
 			<th>Akce</th>
 		</tr>
-		{foreach $teamsData as $team}
-			{foreach $resultsData as $result}
+		{foreach $resultsData as $result}
+			{foreach $teamsData as $team}
 				{if $result->id_tymu == $team->id && $result->id_kategorie == $category->id}
 					<tr>
 						<td>{$result->poradi}</td>
 						<td>{$team->Tym}</td>
-						<td>{gmdate('H:i:s.v', (int)$result->vysledny_cas)}</td>
+						<td>{substr($result->vysledny_cas->format('%I:%S.%F'),0,8)}</td>
 						<td><a class="delete" n:href="deleteTime $result->id">Smazat</a></td>
 					</tr>
 				{/if}

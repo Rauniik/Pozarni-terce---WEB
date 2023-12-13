@@ -1,0 +1,52 @@
+{block content}
+
+<h1 class="main-header" style="display: none;" id="error">Nepodporovaný prohlížeč</h1>
+<div id="connection" style="display: none;" class="main-text">
+<button id="connect" class="input-button" style="background-color: lightgreen;" onclick="_devices()">Připojit</button>
+<button id="disconnect" class="input-button invisible" style="background-color: lightcoral;" onclick="_disconnect()">Odpojit</button>
+</div>
+
+<script>
+    let port;
+    let baudrate = 9600;
+    connection();
+    function connection(){
+    if("serial" in navigator){
+            document.getElementById("connection").style="display: block";
+            document.getElementById("disconnect").classList.add("invisible");
+            return true;
+        }
+            document.getElementById("error").style="display: block";
+            return false;
+    }
+
+    function _devices(){
+        if(connection() == false){ return; }
+        navigator.serial.requestPort().then(
+            (p)=>{
+                port = p;
+                port.open({ baudRate: baudrate}).then(
+                    ()=>{
+                        alert('Connected');
+                        console.log(port.getInfo());
+                        document.getElementById("disconnect").classList.remove("invisible");
+                        document.getElementById("connect").classList.add("invisible");
+
+                    }
+                )
+            }
+        )
+    }
+
+    function _disconnect(){
+        if(connection() == false){ return; }
+        port.forget().then(
+            ()=>{
+                alert('Disconnected');
+                document.getElementById("connect").classList.remove("invisible");
+                document.getElementById("disconnect").classList.add("invisible");
+            }
+        )
+    }
+</script>
+{/block}

@@ -473,4 +473,7 @@ tr {
 input[type="password"] {
     padding-right: 30px;
 }
+.invisible{
+  display: none;
+}
 

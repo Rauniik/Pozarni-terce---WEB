@@ -91,96 +91,159 @@ final class TercePresenter extends Nette\Application\UI\Presenter
         $this->database->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
         if($typ_vypoctu=='min'){
             $resultsData = $this->database->query(
-                /*'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
-                    RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
-                    t.Tym AS nazev_tymu,
-                    v.cas AS vysledny_cas,
-                    v.id AS vysledek_id
+                'WITH AvgCasu AS (
+                    SELECT
+                        cas,
+                        id_uzivatel,
+                        v.id_tymu,
+                        v.id_kategorie,
+                        v.id,
+                        t.Tym AS nazev_tymu,
+                        MIN(TIME_TO_SEC(cas)) AS sekundy,
+                        MIN(MICROSECOND(cas) / 1000000.0) AS milisekundy
+                    FROM
+                        tymy t
+                    JOIN
+                        vysledky v ON t.id = v.id_tymu
+                    WHERE
+                        id_uzivatel = ?
+                    GROUP BY
+                        id_tymu
+                )
+                SELECT
+                    cas,
+                    id_uzivatel,
+                    id_tymu,
+                    id_kategorie,
+                    id,
+                    nazev_tymu,
+                    milisekundy,
+                    SEC_TO_TIME(sekundy + milisekundy) AS vysledny_cas,
+                    RANK() OVER (PARTITION BY id_kategorie ORDER BY sekundy) AS poradi,
+                    id AS vysledek_id
                 FROM
-                    tymy t
-                JOIN
-                    vysledky v ON t.id = v.id_tymu
-                WHERE
-                    id_uzivatel = ?
+                    AvgCasu
                 ORDER BY
-                    v.id_kategorie, v.cas;'*/
-                'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
-                RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
-                t.Tym AS nazev_tymu,
-                MIN(TIME_TO_SEC(v.cas)) AS vysledny_cas,
-                v.id AS vysledek_id
-                FROM
-                    tymy t
-                JOIN
-                    vysledky v ON t.id = v.id_tymu
-                WHERE
-                    id_uzivatel = ?
-                GROUP BY
-                    v.id_tymu
-                ORDER BY
-                    v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
+                    id_kategorie, sekundy, poradi;', $this->user->getIdentity()->id)->fetchAll();
         }
         else if($typ_vypoctu=='max'){
             $resultsData = $this->database->query(
-                'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
-                RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
-                t.Tym AS nazev_tymu,
-                MAX(TIME_TO_SEC(v.cas)) AS vysledny_cas,
-                v.id AS vysledek_id
+                'WITH AvgCasu AS (
+                    SELECT
+                        cas,
+                        id_uzivatel,
+                        v.id_tymu,
+                        v.id_kategorie,
+                        v.id,
+                        t.Tym AS nazev_tymu,
+                        MAX(TIME_TO_SEC(cas)) AS sekundy,
+                        MAX(MICROSECOND(cas) / 1000000.0) AS milisekundy
+                    FROM
+                        tymy t
+                    JOIN
+                        vysledky v ON t.id = v.id_tymu
+                    WHERE
+                        id_uzivatel = ?
+                    GROUP BY
+                        id_tymu
+                )
+                SELECT
+                    cas,
+                    id_uzivatel,
+                    id_tymu,
+                    id_kategorie,
+                    id,
+                    nazev_tymu,
+                    milisekundy,
+                    SEC_TO_TIME(sekundy + milisekundy) AS vysledny_cas,
+                    RANK() OVER (PARTITION BY id_kategorie ORDER BY sekundy) AS poradi,
+                    id AS vysledek_id
                 FROM
-                    tymy t
-                JOIN
-                    vysledky v ON t.id = v.id_tymu
-                WHERE
-                    id_uzivatel = ?
-                GROUP BY
-                    v.id_tymu
+                    AvgCasu
                 ORDER BY
-                    v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
+                    id_kategorie, sekundy, poradi;', $this->user->getIdentity()->id)->fetchAll();
         }
         else if($typ_vypoctu=='prum'){
 
             $resultsData = $this->database->query(
-                'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
-                RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
-                t.Tym AS nazev_tymu,
-                AVG(TIME_TO_SEC(v.cas)) AS vysledny_cas,
-                v.id AS vysledek_id
+                'WITH AvgCasu AS (
+                    SELECT
+                        cas,
+                        id_uzivatel,
+                        v.id_tymu,
+                        v.id_kategorie,
+                        v.id,
+                        t.Tym AS nazev_tymu,
+                        AVG(TIME_TO_SEC(cas)) AS sekundy,
+                        AVG(MICROSECOND(cas) / 1000000.0) AS milisekundy
+                    FROM
+                        tymy t
+                    JOIN
+                        vysledky v ON t.id = v.id_tymu
+                    WHERE
+                        id_uzivatel = ?
+                    GROUP BY
+                        id_tymu
+                )
+                SELECT
+                    cas,
+                    id_uzivatel,
+                    id_tymu,
+                    id_kategorie,
+                    id,
+                    nazev_tymu,
+                    milisekundy,
+                    SEC_TO_TIME(sekundy + milisekundy) AS vysledny_cas,
+                    RANK() OVER (PARTITION BY id_kategorie ORDER BY sekundy) AS poradi,
+                    id AS vysledek_id
                 FROM
-                    tymy t
-                JOIN
-                    vysledky v ON t.id = v.id_tymu
-                WHERE
-                    id_uzivatel = ?
-                GROUP BY
-                    v.id_tymu
+                    AvgCasu
                 ORDER BY
-                    v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
+                    id_kategorie, sekundy, poradi;', $this->user->getIdentity()->id)->fetchAll();
         }
         else if($typ_vypoctu=='sum'){
             $resultsData = $this->database->query(
-                'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
-                RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
-                t.Tym AS nazev_tymu,
-                SUM(TIME_TO_SEC(v.cas)) AS vysledny_cas,
-                v.id AS vysledek_id
+                'WITH AvgCasu AS (
+                    SELECT
+                        cas,
+                        id_uzivatel,
+                        v.id_tymu,
+                        v.id_kategorie,
+                        v.id,
+                        t.Tym AS nazev_tymu,
+                        SUM(TIME_TO_SEC(cas)) AS sekundy,
+                        SUM(MICROSECOND(cas) / 1000000.0) AS milisekundy
+                    FROM
+                        tymy t
+                    JOIN
+                        vysledky v ON t.id = v.id_tymu
+                    WHERE
+                        id_uzivatel = ?
+                    GROUP BY
+                        id_tymu
+                )
+                SELECT
+                    cas,
+                    id_uzivatel,
+                    id_tymu,
+                    id_kategorie,
+                    id,
+                    nazev_tymu,
+                    milisekundy,
+                    SEC_TO_TIME(sekundy + milisekundy) AS vysledny_cas,
+                    RANK() OVER (PARTITION BY id_kategorie ORDER BY sekundy) AS poradi,
+                    id AS vysledek_id
                 FROM
-                    tymy t
-                JOIN
-                    vysledky v ON t.id = v.id_tymu
-                WHERE
-                    id_uzivatel = ?
-                GROUP BY
-                    v.id_tymu
+                    AvgCasu
                 ORDER BY
-                    v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
+                    id_kategorie, sekundy, poradi;', $this->user->getIdentity()->id)->fetchAll();
         } //SEC_TO_TIME(SUM(TIME_TO_SEC(v.cas))) AS vysledny_cas
         else{
             $resultsData = $this->database->query(
                 'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
                 RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
                 t.Tym AS nazev_tymu,
-                TIME_TO_SEC(v.cas) AS vysledny_cas,
+                v.cas AS vysledny_cas,
                 v.id AS vysledek_id
                 FROM
                     tymy t
@@ -189,7 +252,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                 WHERE
                     id_uzivatel = ?
                 ORDER BY
-                    v.id_kategorie, v.cas;', $this->user->getIdentity()->id)->fetchAll();
+                    v.id_kategorie, poradi, v.cas;', $this->user->getIdentity()->id)->fetchAll();
         }
 
         $categoriesData = $this->database->table('kategorie')->fetchAll();
