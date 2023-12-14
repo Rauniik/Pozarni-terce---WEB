@@ -34,6 +34,7 @@
 {/if}
 {/foreach}
 <br>
+{if $hasResults}
 <div class="main-text">
 <h2 style="font-size: medium;" {if $typ_vypoctu != max}class="invisible"{/if}>Metoda vyhodnocování = Nejhorší čas</h2>
 <h2 style="font-size: medium;" {if $typ_vypoctu != sum}class="invisible"{/if}>Metoda vyhodnocování = Součet časů</h2>
@@ -41,6 +42,7 @@
 <h2 style="font-size: medium;" {if $typ_vypoctu != prum}class="invisible"{/if}>Metoda vyhodnocování = Průměrný čas</h2>
 <h2 style="font-size: medium;" {if $typ_vypoctu != vse}class="invisible"{/if}>Metoda vyhodnocování = Všechny časy</h2>
 </div>
+{/if}
 <br>
 <h2 n:if="count($users)==0" class="main-header">Žádná data</h2>
 <h2 n:if="count($users)" class="main-header">Výběr uživatele</h2>

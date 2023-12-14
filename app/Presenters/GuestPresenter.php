@@ -24,6 +24,7 @@ final class GuestPresenter extends Nette\Application\UI\Presenter
 
         $this->template->inputValue = $inputValue;
 
+        $typ_vypoctu = 'all';
         
         $this->template->actionName = $this->getPresenter()->action;
 
@@ -34,12 +35,13 @@ final class GuestPresenter extends Nette\Application\UI\Presenter
 
         // Získání hodnoty guest_visibility
         $guestVisibility = $data['visibility'][0]->guest_visibility;
-
+        if($id>0){
         $result_method = $this->database->query('SELECT vypocet FROM admin WHERE id_uzivatele = ?;', $id)->fetchAll();
         $data = array(
             'typ_vypoctu' => $result_method,
         );
         $typ_vypoctu = $data['typ_vypoctu'][0]->vypocet;
+        }
 
         $results_users = $this->database->fetchAll(
 			"SELECT id, username FROM uzivatel WHERE id > ?", $guestVisibility);
