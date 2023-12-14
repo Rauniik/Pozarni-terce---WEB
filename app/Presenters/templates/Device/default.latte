@@ -2,10 +2,11 @@
 
 <h1 class="main-header" style="display: none;" id="error">Nepodporovaný prohlížeč</h1>
 <div id="connection" style="display: none;" class="main-text">
-<button id="connect" class="input-button" style="background-color: lightgreen;" onclick="_devices()">Připojit</button>
-<button id="disconnect" class="input-button invisible" style="background-color: lightcoral;" onclick="_disconnect()">Odpojit</button>
+<button id="connect" class="input-button" style="background-color: rgb(2, 190, 2);" onclick="_devices()">Připojit</button>
+<button id="disconnect" class="input-button invisible" style="background-color: rgb(190, 2, 2);" onclick="_disconnect()">Odpojit</button>
 </div>
-
+<div id="success"></div>
+<div id="disconnected"></div>
 <script>
     let port;
     let baudrate = 9600;
@@ -27,7 +28,7 @@
                 port = p;
                 port.open({ baudRate: baudrate}).then(
                     ()=>{
-                        alert('Connected');
+                        addNotification();
                         console.log(port.getInfo());
                         document.getElementById("disconnect").classList.remove("invisible");
                         document.getElementById("connect").classList.add("invisible");
@@ -42,11 +43,55 @@
         if(connection() == false){ return; }
         port.forget().then(
             ()=>{
-                alert('Disconnected');
+                addNotificationDisconnect();
                 document.getElementById("connect").classList.remove("invisible");
                 document.getElementById("disconnect").classList.add("invisible");
             }
         )
+    }
+    function addNotification() {
+        var successDiv = document.getElementById('success');
+
+        // Check if the "success" div exists
+        if (successDiv) {
+            // Create a new div element and set its innerHTML to the specified code
+            var notificationDiv = document.createElement('div');
+            notificationDiv.innerHTML = `
+                <figure class="notification">
+                    <div class="notification_body">
+                        <img src="https://www.cestakvitezstvi.cz/src/check-circle.svg"
+                            title="Success" alt="Success" class="notification_icon" />
+                        Připojeno! &#x1F525;
+                    </div>
+                    <div class="notification_progress"></div>
+                </figure>
+            `;
+
+            // Append the new div to the "success" div
+            successDiv.appendChild(notificationDiv);
+        }
+    }
+    function addNotificationDisconnect() {
+        var successDiv = document.getElementById('disconnected');
+
+        // Check if the "success" div exists
+        if (successDiv) {
+            // Create a new div element and set its innerHTML to the specified code
+            var notificationDiv = document.createElement('div');
+            notificationDiv.innerHTML = `
+                <figure class="d_notification">
+                    <div class="d_notification_body">
+                        <img src="https://www.cestakvitezstvi.cz/src/red-cross.svg"
+                            title="Success" alt="Success" class="d_notification_icon" />
+                        Odpojeno! &#x1F9EF;
+                    </div>
+                    <div class="d_notification_progress"></div>
+                </figure>
+            `;
+
+            // Append the new div to the "success" div
+            successDiv.appendChild(notificationDiv);
+        }
     }
 </script>
 {/block}

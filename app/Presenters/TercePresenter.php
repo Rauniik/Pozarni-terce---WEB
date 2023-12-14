@@ -238,7 +238,22 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                 ORDER BY
                     id_kategorie, sekundy, poradi;', $this->user->getIdentity()->id)->fetchAll();
         } //SEC_TO_TIME(SUM(TIME_TO_SEC(v.cas))) AS vysledny_cas
-        else{
+        else if($typ_vypoctu=='vse'){
+            $resultsData = $this->database->query(
+                'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
+                RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
+                t.Tym AS nazev_tymu,
+                v.cas AS vysledny_cas,
+                v.id AS vysledek_id
+                FROM
+                    tymy t
+                JOIN
+                    vysledky v ON t.id = v.id_tymu
+                WHERE
+                    id_uzivatel = ?
+                ORDER BY
+                    v.id_kategorie, poradi, v.cas;', $this->user->getIdentity()->id)->fetchAll();
+        }else{
             $resultsData = $this->database->query(
                 'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
                 RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
@@ -255,12 +270,14 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                     v.id_kategorie, poradi, v.cas;', $this->user->getIdentity()->id)->fetchAll();
         }
 
+
         $categoriesData = $this->database->table('kategorie')->fetchAll();
 
         // Předáme data do šablony
         $this->template->teamsData = $teamsData;
         $this->template->resultsData = $resultsData;
         $this->template->categoriesData = $categoriesData;
+        $this->template->typ_vypoctu = $typ_vypoctu;
     }
     public function renderTymy(){
 

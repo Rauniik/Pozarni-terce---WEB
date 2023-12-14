@@ -144,16 +144,13 @@ li.dropdown {
 /* Pro mobilní zařízení (šířka menší než 768px) */
 @media (max-width: 1280px) {
   .image-full-site {
-	display: block;
-    width: 90%; /* Zobrazení na celou šířku obrazovky */
+    width: 70%;
     margin-left: auto; /* Odstranění levého okraje */
     margin-right: auto; /* Odstranění pravého okraje */
     border: none; /* Odstranění rámečku */
   }
 }
-.image-full-site:hover {
-	border: 5px solid #0fc1d9;
-}
+
 .image-gallery:hover {
 	border: 5px solid #0fc1d9;
 }
@@ -407,14 +404,14 @@ tr {
   }
     .image2 {
 	float: left;
-    width: 100%;
+    width: 80%;
     padding: 15px;
     text-align: left;
     color:#c4c4c4;
 }
     .image {
-	float: right;
-    width: 100%;
+	float: left;
+    width: 80%;
     padding: 15px;
     text-align: left;
     color:#c4c4c4;
@@ -476,4 +473,96 @@ input[type="password"] {
 .invisible{
   display: none;
 }
+.notification {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: max-content;
+  border-radius: 6px;
+  background-color: #313e2c;
+  color: #aaec8a;
+  box-shadow: 0 1px 10px rgba(0,0,0,0.1);
+  transform: translateY(30px);
+  opacity: 0;
+  visibility: hidden;
+  animation: fade-in 3s linear;
+}
+.notification_icon {
+  height: 26px;
+  width: 26px;
+  margin-right: 4px;
+}
+.notification_body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 16px 8px;
+}
+.notification_progress {
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+  width: calc(100% - 8px);
+  height: 3px;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(to right, #313e2c, #aaec8a);
+  border-radius: inherit;
+  animation: progress 2.5s 0.3s linear;
+}
+@keyframes fade-in {
+  5%{
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  95%{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+}
+@keyframes progress {
+  to{
+    transform: scaleX(1);
+  }
+  
+}
 
+.d_notification {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: max-content;
+  border-radius: 6px;
+  background-color: #3e2c2c;
+  color: #be2b2b;
+  box-shadow: 0 1px 10px rgba(0,0,0,0.1);
+  transform: translateY(30px);
+  opacity: 0;
+  visibility: hidden;
+  animation: fade-in 3s linear;
+}
+.d_notification_icon {
+  height: 26px;
+  width: 26px;
+  margin-right: 4px;
+}
+.d_notification_body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 16px 8px;
+}
+.d_notification_progress {
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+  width: calc(100% - 8px);
+  height: 3px;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(to right, #3e2c2c, #be2b2b);
+  border-radius: inherit;
+  animation: progress 2.5s 0.3s linear;
+}
