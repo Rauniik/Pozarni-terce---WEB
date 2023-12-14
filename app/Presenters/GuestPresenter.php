@@ -27,7 +27,7 @@ final class GuestPresenter extends Nette\Application\UI\Presenter
         
         $this->template->actionName = $this->getPresenter()->action;
 
-        $result_visibility = $this->database->fetchAll("SELECT guest_visibility FROM admin WHERE id_uzivatele = 1);
+        $result_visibility = $this->database->fetchAll("SELECT guest_visibility FROM admin WHERE id_uzivatele = 1");
         $data = array(
             'visibility' => $result_visibility,
         );
