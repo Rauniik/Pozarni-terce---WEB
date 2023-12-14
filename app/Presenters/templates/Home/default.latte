@@ -2,6 +2,18 @@
 {* This is the welcome page, you can delete it *}
 
 {block content}
+{if !empty($flashes)}
+{if $flashes[0]->type == 'out'}
+<figure class="d_notification">
+	<div class="d_notification_body">
+		<img src="https://www.cestakvitezstvi.cz/src/red-cross.svg"
+			title="Success" alt="Success" class="d_notification_icon" />
+		Odhlášeno! &#128274;
+	</div>
+	<div class="d_notification_progress"></div>
+</figure>
+{/if}
+{/if}
 
 <section id="main-text">
 <div class="main-header" style="font-size: 48px;">

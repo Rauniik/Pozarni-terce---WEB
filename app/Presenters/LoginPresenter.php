@@ -12,9 +12,9 @@ final class LoginPresenter extends Nette\Application\UI\Presenter
 
     public function __construct(private Nette\Database\Explorer $database){}
 
-    public function renderDefault() {
+    public function renderDefault($success) {
 
-
+        $this->template->success = $success;
         $this->template->actionName = $this->getPresenter()->action;
 
     }
@@ -42,7 +42,8 @@ final class LoginPresenter extends Nette\Application\UI\Presenter
     {
         try {
             $this->getUser()->login($data->username, $data->password);
-            $this->redirect('Terce:casomira', 'min');
+            $this->flashMessage('Logged in!', 'yes');
+            $this->redirect('Terce:casomira', 'vse');
     
         } catch (Nette\Security\AuthenticationException $e) {
             $this->redirect('Home:');
@@ -87,7 +88,7 @@ final class LoginPresenter extends Nette\Application\UI\Presenter
                 'id_uzivatele' => $this->database->getInsertId(),
                 'vypocet' => 'vse',
             ]);
-            $this->redirect('Login:');
+            $this->redirect('Login:default', 'yes');
         }
         /*$results_username = $this->database->query('SELECT username FROM uzivatel');
             $this->database->table('uzivatel')->insert([
@@ -101,9 +102,10 @@ final class LoginPresenter extends Nette\Application\UI\Presenter
     public function actionOut(): void
     {
         $this->getUser()->logout();
-        $this->flashMessage('Odhlášení bylo úspěšné.');
+        $this->flashMessage('Odhlášení bylo úspěšné.', 'out');
         $this->redirect('Home:');
     }
+
 
 
 }

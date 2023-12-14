@@ -71,7 +71,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
             AS 'poradi' FROM vysledky_zeny AS V
             LEFT JOIN tymy AS T ON V.id_tymu = T.id;");*/
 
-        $this->flashMessage('Data byla nahrána', 'success');
+        $this->flashMessage('Data byla nahrána', 'added');
         $this->redirect('this');
     }
             
@@ -79,7 +79,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
     {
     }
 
-    public function renderCasomira($typ_vypoctu)
+    public function renderCasomira($typ_vypoctu, $success)
     {
         // Získejte data pro vytvoření tabulek
         
@@ -293,12 +293,22 @@ final class TercePresenter extends Nette\Application\UI\Presenter
 
     public function actionDeleteTime($id){
 
+        if($id>0){
+            $result_method = $this->database->query('SELECT vypocet FROM admin WHERE id_uzivatele = ?;', $this->user->getIdentity()->id)->fetchAll();
+            $data = array(
+                'typ_vypoctu' => $result_method,
+            );
+            $typ_vypoctu = $data['typ_vypoctu'][0]->vypocet;
+        }
+
         $this->database->table('vysledky')->where('id',$id)->delete();
-        $this->redirect('Terce:casomira typ_vypoctu:min');
+        $this->flashMessage('Data byla smazána', 'deleted');
+        $this->redirect('Terce:casomira', $typ_vypoctu);
     }
     public function actionDeleteTeam($id){
 
         $this->database->table('tymy')->where('id',$id)->delete();
+        $this->flashMessage('Data byla smazána', 'deleted');
         $this->redirect('Terce:tymy');
     }
 
@@ -348,7 +358,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
             AS 'poradi' FROM vysledky_zeny AS V
             LEFT JOIN tymy AS T ON V.id_tymu = T.id;");*/
 
-        $this->flashMessage('Data byla nahrána', 'success');
+        $this->flashMessage('Data byla nahrána', 'added');
         $this->redirect('this');
     }
 
@@ -385,13 +395,14 @@ final class TercePresenter extends Nette\Application\UI\Presenter
             AS 'poradi' FROM vysledky_zeny AS V
             LEFT JOIN tymy AS T ON V.id_tymu = T.id;");*/
 
-        $this->flashMessage('Data byla nahrána', 'success');
+        $this->flashMessage('Data byla nahrána', 'added');
         $this->redirect('this');
     }
 
     public function actionDeleteKategorie($id){
 
         $this->database->table('kategorie')->where('id',$id)->delete();
+        $this->flashMessage('Data byla smazána', 'deleted');
         $this->redirect('Terce:kategorie');
     }
 

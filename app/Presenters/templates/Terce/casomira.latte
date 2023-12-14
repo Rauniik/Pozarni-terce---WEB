@@ -81,4 +81,36 @@
 		<input style="background-color: lightgreen;" n:name=send class="btn btn-default">
 	</div>
 </form>
+{if !empty($flashes)}
+{if $flashes[0]->type == 'yes'}
+<figure class="l_notification">
+	<div class="l_notification_body">
+		<img src="https://www.cestakvitezstvi.cz/src/blue-check.png"
+			title="Success" alt="Success" class="l_notification_icon" />
+		Přihlášeno! &#x1F44D;
+	</div>
+	<div class="l_notification_progress"></div>
+</figure>
+{/if}
+{if $flashes[0]->type == 'added'}
+<figure class="l_notification">
+	<div class="l_notification_body">
+		<img src="https://www.cestakvitezstvi.cz/src/blue-check.png"
+			title="Success" alt="Success" class="l_notification_icon" />
+		Přidáno! &#x1F4BE;
+	</div>
+	<div class="l_notification_progress"></div>
+</figure>
+{/if}
+{if $flashes[0]->type == 'deleted'}
+<figure class="d_notification">
+	<div class="d_notification_body">
+		<img src="https://www.cestakvitezstvi.cz/src/red-cross.svg"
+			title="Success" alt="Success" class="d_notification_icon" />
+		Smazáno! &#x1F69B;
+	</div>
+	<div class="d_notification_progress"></div>
+</figure>
+{/if}
+{/if}
 {/block}

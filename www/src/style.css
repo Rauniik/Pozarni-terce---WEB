@@ -395,6 +395,24 @@ tr {
     text-align: left;
     color:#c4c4c4;
 }
+table {
+  border-collapse: collapse;
+
+  font-family: Arial, Helvetica, sans-serif;
+  margin: auto;
+  width: 80%;
+  padding: 10px;
+  text-align: center;
+}
+.main-header {
+  float:center;
+  text-align: center;
+  margin: auto;
+  width: 80%;
+  padding: 10px;
+  font-size: 24px;
+  font-weight: bold
+}
 }
 @media screen and (max-width:765px) {
   .footer {
@@ -563,6 +581,44 @@ input[type="password"] {
   transform: scaleX(0);
   transform-origin: left;
   background: linear-gradient(to right, #3e2c2c, #be2b2b);
+  border-radius: inherit;
+  animation: progress 2.5s 0.3s linear;
+}
+
+.l_notification {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: max-content;
+  border-radius: 6px;
+  background-color: #032a30;
+  color: #0fc1d9;
+  box-shadow: 0 1px 10px rgba(0,0,0,0.1);
+  transform: translateY(30px);
+  opacity: 0;
+  visibility: hidden;
+  animation: fade-in 3s linear;
+}
+.l_notification_icon {
+  height: 26px;
+  width: 26px;
+  margin-right: 4px;
+}
+.l_notification_body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 16px 8px;
+}
+.l_notification_progress {
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+  width: calc(100% - 8px);
+  height: 3px;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(to right, #032a30, #0fc1d9);
   border-radius: inherit;
   animation: progress 2.5s 0.3s linear;
 }
