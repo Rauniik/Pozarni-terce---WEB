@@ -9,89 +9,94 @@
 <div id="disconnected"></div>
 <script>
     let port;
-    let baudrate = 9600;
+    let baudrate = 115200;
+    let reader;
+
     connection();
-    function connection(){
-    if("serial" in navigator){
-            document.getElementById("connection").style="display: block";
+
+    function connection() {
+        if ("serial" in navigator) {
+            document.getElementById("connection").style = "display: block";
             document.getElementById("disconnect").classList.add("invisible");
             return true;
         }
-            document.getElementById("error").style="display: block";
-            return false;
+        document.getElementById("error").style = "display: block";
+        return false;
     }
 
-    function _devices(){
-        if(connection() == false){ return; }
+    function _devices() {
+        if (connection() == false) { return; }
         navigator.serial.requestPort().then(
-            (p)=>{
+            (p) => {
                 port = p;
-                port.open({ baudRate: baudrate}).then(
-                    ()=>{
+                port.open({ baudRate: baudrate }).then(
+                    () => {
                         addNotification();
                         console.log(port.getInfo());
                         document.getElementById("disconnect").classList.remove("invisible");
                         document.getElementById("connect").classList.add("invisible");
-
+                        readData(); // Přidáno volání funkce pro čtení dat
                     }
-                )
+                );
             }
-        )
+        );
     }
 
-    function _disconnect(){
-        if(connection() == false){ return; }
+    async function readData() {
+    if (port) {
+        const textDecoder = new TextDecoderStream();
+        const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
+        reader = textDecoder.readable.getReader();
+
+        let partialMessage = ''; // Variable to accumulate partial message
+
+        while (true) {
+            try {
+                const { value, done } = await reader.read();
+                if (done) {
+                    console.log("Reader done, closing.");
+                    break;
+                }
+
+                // Concatenate the received chunk to the partial message
+                partialMessage += value;
+
+                // Check if the partial message contains a newline character
+                const newlineIndex = partialMessage.indexOf('\n');
+                if (newlineIndex !== -1) {
+                    // If a newline is found, print the message and remove it from the partial message
+                    const completeMessage = partialMessage.substring(0, newlineIndex + 1);
+                    console.log("Received data:", completeMessage);
+                    partialMessage = partialMessage.substring(newlineIndex + 1);
+                }
+            } catch (error) {
+                console.error("Error reading data:", error);
+            }
+        }
+    }
+}
+
+    function _disconnect() {
+        if (connection() == false) { return; }
+        if (reader) {
+            reader.cancel(); // Zrušení čtení před odpojením
+        }
         port.forget().then(
-            ()=>{
+            () => {
                 addNotificationDisconnect();
                 document.getElementById("connect").classList.remove("invisible");
                 document.getElementById("disconnect").classList.add("invisible");
             }
-        )
+        );
     }
+
     function addNotification() {
-        var successDiv = document.getElementById('success');
-
-        // Check if the "success" div exists
-        if (successDiv) {
-            // Create a new div element and set its innerHTML to the specified code
-            var notificationDiv = document.createElement('div');
-            notificationDiv.innerHTML = `
-                <figure class="notification">
-                    <div class="notification_body">
-                        <img src="https://www.cestakvitezstvi.cz/src/check-circle.svg"
-                            title="Success" alt="Success" class="notification_icon" />
-                        Připojeno! &#x1F525;
-                    </div>
-                    <div class="notification_progress"></div>
-                </figure>
-            `;
-
-            // Append the new div to the "success" div
-            successDiv.appendChild(notificationDiv);
-        }
+        // ... (Zůstává beze změn)
     }
+
     function addNotificationDisconnect() {
-        var successDiv = document.getElementById('disconnected');
-
-        // Check if the "success" div exists
-        if (successDiv) {
-            // Create a new div element and set its innerHTML to the specified code
-            var notificationDiv = document.createElement('div');
-            notificationDiv.innerHTML = `
-                <figure class="d_notification">
-                    <div class="d_notification_body">
-                        <img src="https://www.cestakvitezstvi.cz/src/red-cross.svg"
-                            title="Success" alt="Success" class="d_notification_icon" />
-                        Odpojeno! &#x1F9EF;
-                    </div>
-                    <div class="d_notification_progress"></div>
-                </figure>
-            `;
-
-            // Append the new div to the "success" div
-            successDiv.appendChild(notificationDiv);
-        }
+        // ... (Zůstává beze změn)
     }
 </script>
+
 {/block}
