@@ -7,9 +7,10 @@
 </div>
 <div id="success"></div>
 <div id="disconnected"></div>
-<div class="main-text">
+<div class="main-text invisible" id="form">
+        <h3>Zapsání dat z časomíry do výsledků</h3>
         <div style="margin-top: 20px;">
-            <select id="tym">
+            <label>Tým: <select id="tym"></label>
             {foreach $tymy as $kat=>$tym}
             <optgroup label={$kat}>
                 {foreach $tym as $id=>$Tym}
@@ -26,7 +27,41 @@
             <button onclick="sendData()" class="input-button">Zapsat</button>
         </div>
 </div>
+<div id="customConsole" class="main-text invisible" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow: auto;"></div>
 <script>
+function logToConsole(message) {
+    var consoleDiv = document.getElementById("customConsole");
+    if (typeof message === 'object') {
+        message = JSON.stringify(message);
+    }
+    const formattedMessage = message.trim(); // Remove leading/trailing whitespace
+
+    // Extract the actual data without the prefix
+    const dataWithoutPrefix = formattedMessage.replace(/^Získaný čas: /, '');
+
+    // Keep the time and "Received data:" in the console
+    const consoleEntry = document.createElement('div');
+    consoleEntry.classList.add('console-entry');
+    consoleEntry.innerHTML = formattedMessage;
+    consoleDiv.appendChild(consoleEntry);
+
+    // Add click event listener to each console entry
+    consoleEntry.addEventListener('click', () => {
+        // Insert only the data into the input with ID "time"
+        document.getElementById('time').value = dataWithoutPrefix;
+    });
+
+    consoleDiv.scrollTop = consoleDiv.scrollHeight; // Auto-scroll to the bottom
+}
+
+
+
+
+    // Redirect console.log to the custom console
+    console.log = function (message) {
+        logToConsole(message);
+    };
+
     let port;
     let baudrate = 115200;
     let reader;
@@ -37,6 +72,9 @@
         if ("serial" in navigator) {
             document.getElementById("connection").style = "display: block";
             document.getElementById("disconnect").classList.add("invisible");
+            document.getElementById("form").classList.add("invisible");
+            document.getElementById("customConsole").classList.add("invisible");
+            document.getElementById("animation-green").classList.add("invisible");
             return true;
         }
         document.getElementById("error").style = "display: block";
@@ -53,7 +91,11 @@
                         addNotification();
                         console.log(port.getInfo());
                         document.getElementById("disconnect").classList.remove("invisible");
+                        document.getElementById("form").classList.remove("invisible");
+                        document.getElementById("customConsole").classList.remove("invisible");
+                        document.getElementById("animation-green").classList.remove("invisible");
                         document.getElementById("connect").classList.add("invisible");
+                        document.getElementById("animation-red").classList.add("invisible");
                         readData(); // Přidáno volání funkce pro čtení dat
                     }
                 );
@@ -73,28 +115,30 @@
             try {
                 const { value, done } = await reader.read();
                 if (done) {
-                    console.log("Reader done, closing.");
+                    console.log("Čtení dokončeno. Zavírám.");
                     break;
                 }
 
-                // Concatenate the received chunk to the partial message
-                partialMessage += value;
+                // Split the received chunk by newline characters
+                const chunks = (partialMessage + value).split('\n');
 
-                // Check if the partial message contains a newline character
-                const newlineIndex = partialMessage.indexOf('\n');
-                if (newlineIndex !== -1) {
-                    // If a newline is found, print the message and remove it from the partial message
-                    const completeMessage = partialMessage.substring(0, newlineIndex + 1);
-                    console.log("Received data:", completeMessage);
+                // Iterate over the chunks, excluding the last one (incomplete message)
+                for (let i = 0; i < chunks.length - 1; i++) {
+                    const completeMessage = chunks[i].trim();
+                    logToConsole("Získaný čas: " + completeMessage);
                     document.getElementById('time').value=completeMessage;
-                    partialMessage = partialMessage.substring(newlineIndex + 1);
                 }
+
+                // Store the last chunk as the new partial message
+                partialMessage = chunks[chunks.length - 1];
             } catch (error) {
-                console.error("Error reading data:", error);
+                console.error("Error při čtení dat:", error);
             }
         }
     }
 }
+
+
 
     function _disconnect() {
         if (connection() == false) { return; }
@@ -106,6 +150,7 @@
                 addNotificationDisconnect();
                 document.getElementById("connect").classList.remove("invisible");
                 document.getElementById("disconnect").classList.add("invisible");
+                document.getElementById("animation-red").classList.remove("invisible");
             }
         );
     }
@@ -124,10 +169,39 @@
         if(!Data){
             return;
         }else{
-            
             console.log(Data, Tym);
         }
     }
 </script>
+<figure id="animation-green" class="notification invisible">
+	<div class="notification_body">
+		<img src="https://www.cestakvitezstvi.cz/src/check-circle.svg"
+			title="Success" alt="Success" class="notification_icon" />
+		Připojeno! &#x1F44D;
+	</div>
+	<div class="notification_progress"></div>
+</figure>
+<figure id="animation-red" class="d_notification invisible">
+	<div class="d_notification_body">
+		<img src="https://www.cestakvitezstvi.cz/src/red-cross.svg"
+			title="Success" alt="Success" class="d_notification_icon" />
+		Odpojeno! &#x1F44D;
+	</div>
+	<div class="d_notification_progress"></div>
+</figure>
 
+<style>
+    .console-entry {
+    cursor: pointer;
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: #f0f0f0; /* Adjust as needed */
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.console-entry:hover {
+    background-color: #e0e0e0; /* Adjust as needed */
+}
+</style>
 {/block}
