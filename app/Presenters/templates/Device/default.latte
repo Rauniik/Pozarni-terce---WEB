@@ -7,6 +7,25 @@
 </div>
 <div id="success"></div>
 <div id="disconnected"></div>
+<div class="main-text">
+        <div style="margin-top: 20px;">
+            <select id="tym">
+            {foreach $tymy as $kat=>$tym}
+            <optgroup label={$kat}>
+                {foreach $tym as $id=>$Tym}
+                <option value={$id}>{$Tym}</option>
+                {/foreach}
+            </optgroup>
+            {/foreach}
+            </select>
+        </div>
+        <div style="margin-top: 20px;">
+        <label>Čas: <input id="time" type="text" required placeholder="00:00:00.00" inputmode="numeric" step="1" readonly></label>
+        </div>
+        <div style="margin-top: 20px;">
+            <button onclick="sendData()" class="input-button">Zapsat</button>
+        </div>
+</div>
 <script>
     let port;
     let baudrate = 115200;
@@ -67,6 +86,7 @@
                     // If a newline is found, print the message and remove it from the partial message
                     const completeMessage = partialMessage.substring(0, newlineIndex + 1);
                     console.log("Received data:", completeMessage);
+                    document.getElementById('time').value=completeMessage;
                     partialMessage = partialMessage.substring(newlineIndex + 1);
                 }
             } catch (error) {
@@ -96,6 +116,17 @@
 
     function addNotificationDisconnect() {
         // ... (Zůstává beze změn)
+    }
+
+    function sendData() {
+        let Data = document.getElementById('time').value;
+        let Tym = document.getElementById('tym').value;
+        if(!Data){
+            return;
+        }else{
+            
+            console.log(Data, Tym);
+        }
     }
 </script>
 
