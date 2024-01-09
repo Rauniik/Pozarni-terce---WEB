@@ -46,6 +46,11 @@
 <a class="delete" n:href="Terce:casomira typ_vypoctu:vse" {if $typ_vypoctu == vse} style="background-color: #0fc1d9;"{/if}>VŠE</a>
 </div>
 <br>
+<div class="main-text" style="padding-top: 10px;">
+	{foreach $users as $uzivatel}
+	<a class="delete" href="{link Guest:default, id =>  $uzivatel->id}">Zobrazit výsledky</a>
+	{/foreach}
+</div>
 <h1 class="main-header">Vložení dat</h1>
 <form n:name=uploadForm class="main-text">
 	<div>

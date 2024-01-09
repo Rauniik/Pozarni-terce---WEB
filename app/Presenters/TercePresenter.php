@@ -89,7 +89,7 @@ final class TercePresenter extends Nette\Application\UI\Presenter
             'vypocet' => $typ_vypoctu,
         ]);
         $this->database->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
-        if($typ_vypoctu=='min'){
+        /*if($typ_vypoctu=='min'){
             $resultsData = $this->database->query(
                 'WITH AvgCasu AS (
                     SELECT
@@ -237,8 +237,8 @@ final class TercePresenter extends Nette\Application\UI\Presenter
                     AvgCasu
                 ORDER BY
                     id_kategorie, sekundy, poradi;', $this->user->getIdentity()->id)->fetchAll();
-        } //SEC_TO_TIME(SUM(TIME_TO_SEC(v.cas))) AS vysledny_cas
-        else if($typ_vypoctu=='vse'){
+        } //SEC_TO_TIME(SUM(TIME_TO_SEC(v.cas))) AS vysledny_cas*/
+        /*else*/ if($typ_vypoctu=='vse'){
             $resultsData = $this->database->query(
                 'SELECT cas, id_uzivatel, v.id_tymu, v.id_kategorie, v.id, 
                 RANK() OVER (PARTITION BY v.id_kategorie ORDER BY v.cas) AS poradi,
@@ -272,6 +272,10 @@ final class TercePresenter extends Nette\Application\UI\Presenter
 
 
         $categoriesData = $this->database->table('kategorie')->fetchAll();
+
+        $results_users = $this->database->fetchAll(
+			"SELECT id, username FROM uzivatel WHERE id = ?", $this->user->getIdentity()->id);
+		$this->template->users = $results_users;
 
         // Předáme data do šablony
         $this->template->teamsData = $teamsData;

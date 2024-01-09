@@ -2,7 +2,9 @@
 
 <h1 class="main-header" style="display: none;" id="error">Nepodporovaný prohlížeč</h1>
 <div id="connection" style="display: none;" class="main-text">
-<button id="connect" class="input-button" style="background: linear-gradient(to top, #268101, #51e906ea);" onclick="_devices()">Připojit</button>
+<div id="connect" style="padding: 12.5%;">
+<button class="input-button" style="background: linear-gradient(to top, #268101, #51e906ea);" onclick="_devices()">Připojit</button>
+</div>
 <button id="disconnect" class="input-button invisible" style="background: linear-gradient(to top, #810101, #e90606ea);" onclick="_disconnect()">Odpojit</button>
 </div>
 <div id="success"></div>
@@ -29,39 +31,6 @@
 </div>
 <div id="customConsole" class="main-text invisible" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow: auto;"></div>
 <script>
-function logToConsole(message) {
-    var consoleDiv = document.getElementById("customConsole");
-    if (typeof message === 'object') {
-        message = JSON.stringify(message);
-    }
-    const formattedMessage = message.trim(); // Remove leading/trailing whitespace
-
-    // Extract the actual data without the prefix
-    const dataWithoutPrefix = formattedMessage.replace(/^Získaný čas: /, '');
-
-    // Keep the time and "Received data:" in the console
-    const consoleEntry = document.createElement('div');
-    consoleEntry.classList.add('console-entry');
-    consoleEntry.innerHTML = formattedMessage;
-    consoleDiv.appendChild(consoleEntry);
-
-    // Add click event listener to each console entry
-    consoleEntry.addEventListener('click', () => {
-        // Insert only the data into the input with ID "time"
-        document.getElementById('time').value = dataWithoutPrefix;
-    });
-
-    consoleDiv.scrollTop = consoleDiv.scrollHeight; // Auto-scroll to the bottom
-}
-
-
-
-
-    // Redirect console.log to the custom console
-    console.log = function (message) {
-        logToConsole(message);
-    };
-
     let port;
     let baudrate = 115200;
     let reader;
@@ -89,7 +58,7 @@ function logToConsole(message) {
                 port.open({ baudRate: baudrate }).then(
                     () => {
                         addNotification();
-                        console.log(port.getInfo());
+                        console.log(/*port.getInfo()*/"Úspěšně připojeno!");
                         document.getElementById("disconnect").classList.remove("invisible");
                         document.getElementById("form").classList.remove("invisible");
                         document.getElementById("customConsole").classList.remove("invisible");
@@ -126,6 +95,7 @@ function logToConsole(message) {
                 for (let i = 0; i < chunks.length - 1; i++) {
                     const completeMessage = chunks[i].trim();
                     logToConsole("Získaný čas: " + completeMessage);
+
                     document.getElementById('time').value=completeMessage;
                 }
 
@@ -138,6 +108,22 @@ function logToConsole(message) {
     }
 }
 
+    function sendData() {
+        let Data = document.getElementById('time').value;
+        let Tym = document.getElementById('tym').value;
+        if(!Data){
+            return;
+        } else {
+            // logToConsole("Čas: " + Data + " Tým: " + Tym);
+            document.getElementById("animation-send").classList.remove("invisible");
+
+            // Add a delay of 5 seconds (5000 milliseconds)
+            setTimeout(function () {
+                document.getElementById("animation-send").classList.add("invisible");
+            }, 3000);
+        }
+
+    }
 
 
     function _disconnect() {
@@ -163,15 +149,35 @@ function logToConsole(message) {
         // ... (Zůstává beze změn)
     }
 
-    function sendData() {
-        let Data = document.getElementById('time').value;
-        let Tym = document.getElementById('tym').value;
-        if(!Data){
-            return;
-        }else{
-            console.log(Data, Tym);
-        }
+    function logToConsole(message) {
+    var consoleDiv = document.getElementById("customConsole");
+    if (typeof message === 'object') {
+        message = JSON.stringify(message);
     }
+    const formattedMessage = message.trim(); // Remove leading/trailing whitespace
+
+    // Extract the actual data without the prefix
+    const dataWithoutPrefix = formattedMessage.replace(/^Získaný čas: /, '');
+
+    // Keep the time and "Received data:" in the console
+    const consoleEntry = document.createElement('div');
+    consoleEntry.classList.add('console-entry');
+    consoleEntry.innerHTML = formattedMessage;
+    consoleDiv.appendChild(consoleEntry);
+
+    // Add click event listener to each console entry
+    consoleEntry.addEventListener('click', () => {
+        // Insert only the data into the input with ID "time"
+        document.getElementById('time').value = dataWithoutPrefix;
+    });
+
+    consoleDiv.scrollTop = consoleDiv.scrollHeight; // Auto-scroll to the bottom
+    }
+
+    // Redirect console.log to the custom console
+    console.log = function (message) {
+        logToConsole(message);
+    };
 </script>
 <figure id="animation-green" class="notification invisible">
 	<div class="notification_body">
@@ -188,6 +194,15 @@ function logToConsole(message) {
 		Odpojeno! &#x1F44D;
 	</div>
 	<div class="d_notification_progress"></div>
+</figure>
+</figure>
+<figure id="animation-send" class="l_notification invisible">
+	<div class="l_notification_body">
+		<img src="https://www.cestakvitezstvi.cz/src/blue-check.png"
+			title="Success" alt="Success" class="l_notification_icon" />
+		Odesláno! &#x1F44D;
+	</div>
+	<div class="l_notification_progress"></div>
 </figure>
 
 <style>
