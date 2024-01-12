@@ -1,0 +1,52 @@
+{block content}
+<h1 class="main-header" style="font-size: 58px">Výsledková listina</h1>
+<div id="table" class="main-text">
+</div>
+<script>
+    function getURL(){
+        let url = window.location.href.split("/");
+        let urls = "";
+        url[url.length - 2] = "data";
+        for(let i = 0; i<url.length; i++){
+            if(i !== 0){
+                urls += "/";
+            }
+            urls += url[i];
+        }
+        return urls;
+    }
+
+    function fetchData(){
+        fetch(getURL()).then(
+            (response)=>{
+                response.json().then(
+                    (data)=>{
+                        renderData(data);
+                    }
+                )
+            }
+        )
+    }
+
+    function renderData(data){
+        if(document.getElementById("content")){
+            document.getElementById("content").remove();
+        }
+        let content = document.createElement("div");
+        content.id = "content";
+        document.getElementById("table").appendChild(content);
+
+        for(let kategorie of data.Kategorie){
+            let kategorieNode = document.createElement("h3");
+            kategorieNode.innerHTML = "Kategorie " + kategorie.kategorie;
+            content.appendChild(kategorieNode);
+        }
+
+        console.log(data.Kategorie);
+
+    }
+
+    fetchData();
+    setInterval(fetchData, 5000);
+</script>
+{/block}

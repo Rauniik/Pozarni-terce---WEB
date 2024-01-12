@@ -44,11 +44,24 @@ final class DevicePresenter extends Nette\Application\UI\Presenter
 
     }
 
-    public function actionData($id) {
+    public function actionData() {
 
         if($this->httprequest->isMethod('POST')){
             $body=$this->httprequest->getRawBody();
-            $this->sendJson(json_encode($body));
+
+            $data = json_decode($body, false);
+
+            $tym = $this->database->table('tymy')->get($data->Tym);
+            
+            $this->database->table('vysledky')->insert([
+                'id_tymu' => $data->Tym,
+                'cas' => $data->Data,
+                'id_kategorie' => $tym->id_kategorie,
+                'id_uzivatel' => $data->User
+            ]);
+
+            $this->sendJson(json_encode([]));
+
         }else{
             $this->error();
         }
