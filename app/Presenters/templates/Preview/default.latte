@@ -57,27 +57,27 @@ function getURL() {
             const row = document.createElement('tr');
 
             // Přidání sloupců s údaji o týmu
-            if(vysledek.cas.f !== 0){
-                milisekundy = vysledek.cas.f.toString().substring(2);
+            if(vysledek.vysledny_cas.f !== 0){
+                milisekundy = vysledek.vysledny_cas.f.toString().substring(2);
             }else{
                 milisekundy = "00"
             }
 
-            if(vysledek.cas.s !== 0){
-                if(vysledek.cas.s < 10){
-                    sekundy = "0" + vysledek.cas.s
+            if(vysledek.vysledny_cas.s !== 0){
+                if(vysledek.vysledny_cas.s < 10){
+                    sekundy = "0" + vysledek.vysledny_cas.s
                 }else{
-                    sekundy = vysledek.cas.s
+                    sekundy = vysledek.vysledny_cas.s
                 }
             }else{
                 sekundy = "00"
             }
 
-            if(vysledek.cas.i !== 0){
-                if(vysledek.cas.i < 10){
-                    minuty = "0" + vysledek.cas.i
+            if(vysledek.vysledny_cas.i !== 0){
+                if(vysledek.vysledny_cas.i < 10){
+                    minuty = "0" + vysledek.vysledny_cas.i
                 }else{
-                    minuty = vysledek.cas.i
+                    minuty = vysledek.vysledny_cas.i
                 }
             }else{
                 minuty = "00"
@@ -116,8 +116,13 @@ function getURL() {
                         
                         // Volání createTable pro každou kategorii
                         for (const category of data.Kategorie) {
-                            createTable(data, category);
-                        }
+                        // Zkontrolovat, zda existují výsledky pro danou kategorii
+                            const vysledkyKategorie = data.Vysledek.filter(vysledek => vysledek.id_kategorie === category.id);
+                            
+                            if (vysledkyKategorie.length > 0) {
+                                createTable(data, category);
+                            }
+                    }
                     }
                 );
             }
@@ -126,11 +131,11 @@ function getURL() {
 
     // Volání fetchData pro získání dat a následné vytvoření tabulek
     fetchData();
-    setInterval(fetchData, 120000);
+    setInterval(fetchData, 5000);
 </script>
 <style>
     .wide{
-        width: 80%;
+        width: auto;
     }
 </style>
 {/block}
