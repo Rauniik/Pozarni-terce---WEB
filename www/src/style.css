@@ -622,3 +622,9 @@ input[type="password"] {
   border-radius: inherit;
   animation: progress 2.5s 0.3s linear;
 }
+
+.spacer{
+  padding-top: 25px;
+}
+
+

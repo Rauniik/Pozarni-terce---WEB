@@ -30,6 +30,10 @@
         </div>
 </div>
 <div id="customConsole" class="main-text invisible" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow: auto;"></div>
+<br>
+<div class="invisible main-text" id="table">
+<a class="input-button" href="{link Preview:default, id =>  $user->getIdentity()->id}" target="_blank" rel="noopener noreferrer">Výsledky</a>
+</div>
 <script>
     let port;
     let baudrate = 115200;
@@ -41,6 +45,7 @@
         if ("serial" in navigator) {
             document.getElementById("connection").style = "display: block";
             document.getElementById("disconnect").classList.add("invisible");
+            document.getElementById("table").classList.add("invisible");
             document.getElementById("form").classList.add("invisible");
             document.getElementById("customConsole").classList.add("invisible");
             document.getElementById("animation-green").classList.add("invisible");
@@ -60,6 +65,7 @@
                         addNotification();
                         console.log(/*port.getInfo()*/"Úspěšně připojeno!");
                         document.getElementById("disconnect").classList.remove("invisible");
+                        document.getElementById("table").classList.remove("invisible");
                         document.getElementById("form").classList.remove("invisible");
                         document.getElementById("customConsole").classList.remove("invisible");
                         document.getElementById("animation-green").classList.remove("invisible");

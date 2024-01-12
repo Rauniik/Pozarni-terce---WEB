@@ -1,14 +1,13 @@
 {block content}
 <h1 class="main-header" style="font-size: 58px">Výsledková listina</h1>
-<div id="table" class="main-text">
-</div>
+<div id="table"></div>
 <script>
-    function getURL(){
+function getURL() {
         let url = window.location.href.split("/");
         let urls = "";
         url[url.length - 2] = "data";
-        for(let i = 0; i<url.length; i++){
-            if(i !== 0){
+        for (let i = 0; i < url.length; i++) {
+            if (i !== 0) {
                 urls += "/";
             }
             urls += url[i];
@@ -16,37 +15,122 @@
         return urls;
     }
 
-    function fetchData(){
-        fetch(getURL()).then(
-            (response)=>{
-                response.json().then(
-                    (data)=>{
-                        renderData(data);
-                    }
-                )
+    function createTable(data, category) {
+        const divider = document.createElement('div');
+
+        const table = document.createElement('table');
+        table.classList.add('wide');
+
+        const spacer = document.createElement('br');
+        table.appendChild(spacer);
+
+        const tableHeader = document.createElement('div');
+        tableHeader.textContent = `Kategorie ${ category.kategorie }`;
+        tableHeader.classList.add('main-header');
+        divider.appendChild(tableHeader);
+
+        // Vytvoření záhlaví a těla tabulky
+        const theadTbodyWrapper = document.createElement('div');
+
+        const thead = document.createElement('thead');
+        const tbody = document.createElement('tbody');
+
+        const headerRow = document.createElement('tr');
+        const headerColumns = ['Pořadí týmu', 'Název týmu', 'Čas týmu'];
+
+        for (const column of headerColumns) {
+            const th = document.createElement('th');
+            th.textContent = column;
+            headerRow.appendChild(th);
+        }
+
+        thead.appendChild(headerRow);
+        theadTbodyWrapper.appendChild(thead);
+
+        // Filtrace výsledků podle kategorie
+        const vysledkyKategorie = data.Vysledek.filter(vysledek => vysledek.id_kategorie === category.id);
+
+        // Seřazení výsledků podle pořadí
+        vysledkyKategorie.sort((a, b) => a.poradi - b.poradi);
+
+        for (const vysledek of vysledkyKategorie) {
+            const row = document.createElement('tr');
+
+            // Přidání sloupců s údaji o týmu
+            if(vysledek.cas.f !== 0){
+                milisekundy = vysledek.cas.f.toString().substring(2);
+            }else{
+                milisekundy = "00"
             }
-        )
+
+            if(vysledek.cas.s !== 0){
+                if(vysledek.cas.s < 10){
+                    sekundy = "0" + vysledek.cas.s
+                }else{
+                    sekundy = vysledek.cas.s
+                }
+            }else{
+                sekundy = "00"
+            }
+
+            if(vysledek.cas.i !== 0){
+                if(vysledek.cas.i < 10){
+                    minuty = "0" + vysledek.cas.i
+                }else{
+                    minuty = vysledek.cas.i
+                }
+            }else{
+                minuty = "00"
+            }
+
+            const columns = [
+                vysledek.poradi,
+                vysledek.nazev_tymu,
+                `${ minuty }:${ sekundy }.${ milisekundy }`
+            ];
+
+            for (const columnText of columns) {
+                const td = document.createElement('td');
+                td.textContent = columnText;
+                row.appendChild(td);
+            }
+
+            tbody.appendChild(row);
+        }
+
+        theadTbodyWrapper.appendChild(tbody);
+        table.appendChild(theadTbodyWrapper);
+
+        // Přidání tabulky do divu s id "table"
+        document.getElementById('table').appendChild(divider);
+        document.getElementById('table').appendChild(table);
     }
 
-    function renderData(data){
-        if(document.getElementById("content")){
-            document.getElementById("content").remove();
-        }
-        let content = document.createElement("div");
-        content.id = "content";
-        document.getElementById("table").appendChild(content);
-
-        for(let kategorie of data.Kategorie){
-            let kategorieNode = document.createElement("h3");
-            kategorieNode.innerHTML = "Kategorie " + kategorie.kategorie;
-            content.appendChild(kategorieNode);
-        }
-
-        console.log(data.Kategorie);
-
+    function fetchData() {
+        fetch(getURL()).then(
+            (response) => {
+                response.json().then(
+                    (data) => {
+                        // Čištění obsahu elementu s id "table"
+                        document.getElementById('table').innerHTML = '';
+                        
+                        // Volání createTable pro každou kategorii
+                        for (const category of data.Kategorie) {
+                            createTable(data, category);
+                        }
+                    }
+                );
+            }
+        );
     }
 
+    // Volání fetchData pro získání dat a následné vytvoření tabulek
     fetchData();
-    setInterval(fetchData, 5000);
+    setInterval(fetchData, 120000);
 </script>
+<style>
+    .wide{
+        width: 80%;
+    }
+</style>
 {/block}

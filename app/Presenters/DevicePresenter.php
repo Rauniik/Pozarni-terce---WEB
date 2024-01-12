@@ -27,7 +27,8 @@ final class DevicePresenter extends Nette\Application\UI\Presenter
 
     public function renderDefault() {
 
-        
+        $id = $this->user->getIdentity()->id;
+
         $this->template->actionName = $this->getPresenter()->action;
 
         $result_kategorie = $this->database->query("SELECT * FROM kategorie WHERE id_uzivatele = ?", $this->user->getIdentity()->id);
@@ -41,7 +42,7 @@ final class DevicePresenter extends Nette\Application\UI\Presenter
             $kat [$kategorie->kategorie] = $tymy;
         }
 		$this->template->tymy = $kat;
-
+        
     }
 
     public function actionData() {
