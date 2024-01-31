@@ -99,10 +99,13 @@
 
                 // Iterate over the chunks, excluding the last one (incomplete message)
                 for (let i = 0; i < chunks.length - 1; i++) {
-                    const completeMessage = chunks[i].trim();
-                    logToConsole("Získaný čas: " + completeMessage);
-
-                    document.getElementById('time').value=completeMessage;
+                        const completeMessage = chunks[i].trim();
+                        if (completeMessage.includes('0')) {
+                            logToConsole("Získaný čas: " + completeMessage);
+                            document.getElementById('time').value=completeMessage;
+                        }else{
+                            console.log(completeMessage);
+                        }
                 }
 
                 // Store the last chunk as the new partial message
