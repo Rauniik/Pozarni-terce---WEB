@@ -49,7 +49,10 @@
             </select>
         </div>
         <br>
-        <button id="confirmButton" onclick="hideCustomAlert(); sendDataAlert()">OK</button>
+        <div class="button-container">
+            <button id="confirmButton" onclick="hideCustomAlert(); sendDataAlert()">Odeslat</button>
+            <button id="cancelButton" onclick="hideCustomAlert()">Zrušit</button>
+        </div>
     </div>
 </div>
 <script>
@@ -327,14 +330,28 @@
         align-items: center;
     }
 
-    #confirmButton {
+    .button-container {
+        margin-top: 15px; /* Mezera mezi tlačítky */
+    }
+
+    #confirmButton, #cancelButton {
         padding: 10px 20px;
-        background-color: #4CAF50; /* zelená barva */
-        color: white;
         border: none;
         cursor: pointer;
         border-radius: 5px; /* Zaoblení rohů tlačítka */
     }
+
+    #confirmButton {
+        background-color: #4CAF50; /* zelená barva */
+        color: white;
+        margin-right: 10px; /* Mezera mezi tlačítky */
+    }
+
+    #cancelButton {
+        background-color: #da1616; /* červená barva */
+        color: white;
+    }
+
 
     @keyframes fadeIn {
         to {
