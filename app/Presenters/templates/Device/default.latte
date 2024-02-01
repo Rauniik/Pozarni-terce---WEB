@@ -34,6 +34,24 @@
 <div class="invisible main-text" id="table">
 <a class="input-button" href="{link Preview:default, id =>  $user->getIdentity()->id}" target="_blank" rel="noopener noreferrer">Výsledky</a>
 </div>
+<div id="customAlert" class="custom-alert">
+    <div class="alert-content">
+        <p id="alertMessage"></p>
+        <div style="margin-top: 20px;">
+            <label>Tým: <select id="tym_alert"></label>
+            {foreach $tymy as $kat=>$tym}
+            <optgroup label={$kat}>
+                {foreach $tym as $id=>$Tym}
+                <option value={$id}>{$Tym}</option>
+                {/foreach}
+            </optgroup>
+            {/foreach}
+            </select>
+        </div>
+        <br>
+        <button id="confirmButton" onclick="hideCustomAlert(); sendDataAlert()">OK</button>
+    </div>
+</div>
 <script>
     let port;
     let baudrate = 115200;
@@ -103,6 +121,7 @@
                         if (completeMessage.includes('0')) {
                             logToConsole("Získaný čas: " + completeMessage);
                             document.getElementById('time').value=completeMessage;
+                            showCustomAlert("Získaný čas: " + completeMessage);
                         }else{
                             console.log(completeMessage);
                         }
@@ -132,6 +151,27 @@
     function sendData() {
         let Data = document.getElementById('time').value;
         let Tym = document.getElementById('tym').value;
+        let User = {$user->getIdentity()->id};
+        if(!Data){
+            return;
+        } else {
+            let json_data = JSON.stringify({ Data: Data, Tym: Tym, User: User });
+            fetch(getURL(), { method:"POST", body:json_data }).then(()=>{
+                // logToConsole("Čas: " + Data + " Tým: " + Tym);
+                document.getElementById("animation-send").classList.remove("invisible");
+
+                // Add a delay of 5 seconds (5000 milliseconds)
+                setTimeout(function () {
+                    document.getElementById("animation-send").classList.add("invisible");
+                }, 3000);
+            });
+        }
+
+    }
+
+    function sendDataAlert() {
+        let Data = document.getElementById('time').value;
+        let Tym = document.getElementById('tym_alert').value;
         let User = {$user->getIdentity()->id};
         if(!Data){
             return;
@@ -203,6 +243,25 @@
     console.log = function (message) {
         logToConsole(message);
     };
+
+    // Funkce pro zobrazení vlastního alertu
+    function showCustomAlert(message) {
+    // Nastaví zprávu do alertu
+    document.getElementById('alertMessage').innerText = message;
+    
+    // Zobrazí alert
+    document.getElementById('customAlert').style.display = 'block';
+    }
+
+    // Funkce pro skrytí vlastního alertu
+    function hideCustomAlert() {
+        document.getElementById('customAlert').style.display = 'none';
+    }
+
+    // Kód, který se spustí při kliknutí na potvrzovací tlačítko
+    document.getElementById('confirmButton').addEventListener('click', function() {
+        hideCustomAlert();
+    });
 </script>
 <figure id="animation-green" class="notification invisible">
 	<div class="notification_body">
@@ -238,10 +297,51 @@
     background-color: #f0f0f0; /* Adjust as needed */
     border: 1px solid #ccc;
     border-radius: 3px;
-}
+    }
 
-.console-entry:hover {
-    background-color: #e0e0e0; /* Adjust as needed */
-}
+    .console-entry:hover {
+        background-color: #e0e0e0; /* Adjust as needed */
+    }
+    .custom-alert {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    padding: 20px;
+    width: 70%;
+    max-width: 400px; /* maximální šířka */
+    text-align: center;
+    z-index: 9999; /* zajistí, že bude navrchu ostatních prvků */
+    border-radius: 10px; /* Zaoblení rohů */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Stín */
+    opacity: 0; /* Výchozí stav - neviditelný */
+    animation: fadeIn 0.5s ease forwards; /* Animace vstupu */
+    }
+
+    .alert-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #confirmButton {
+        padding: 10px 20px;
+        background-color: #4CAF50; /* zelená barva */
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px; /* Zaoblení rohů tlačítka */
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+
+
 </style>
 {/block}
