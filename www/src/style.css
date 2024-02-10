@@ -141,14 +141,48 @@ li.dropdown {
   transition: border 0.3s ease-in-out;
 }
 
+.picture-container {
+  max-width: 80%; /* Ensure the container doesn't exceed 80% of the viewport width */
+  margin: 0 auto; /* Center the container horizontally */
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Distribute space between items */
+}
+
+/* Apply styles to each image */
+.picture-container img {
+  max-width: calc(100% / 3 - 10px); /* Each image takes up one-third of the container width with spacing */
+  height: fit-content;
+  max-height: auto; /* Allow the height to adjust proportionally */
+  object-fit: cover; /* Ensure the entire image is visible */
+  display: block;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 5px;
+}   
+
+.picture-border {
+  border: 5px solid #000;
+  border-radius: 5%;
+  transition: border 0.2s ease-in-out;
+  background-image: linear-gradient(to bottom right, #f1f1f1, #acacac);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
 /* Pro mobilní zařízení (šířka menší než 768px) */
 @media (max-width: 1280px) {
   .image-full-site {
     width: 70%;
     margin-left: auto; /* Odstranění levého okraje */
     margin-right: auto; /* Odstranění pravého okraje */
-    border: none; /* Odstranění rámečku */
   }
+}
+
+.image-full-site:hover {
+	border: 5px solid #0fc1d9;
+}
+
+.picture-border:hover {
+	border: 5px solid #0fc1d9;
 }
 
 .image-gallery:hover {

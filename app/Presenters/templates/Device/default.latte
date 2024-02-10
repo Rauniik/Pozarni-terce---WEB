@@ -121,19 +121,26 @@
                 // Iterate over the chunks, excluding the last one (incomplete message)
                 for (let i = 0; i < chunks.length - 1; i++) {
                         const completeMessage = chunks[i].trim();
-                        if (completeMessage.includes('0')) {
+                        if (completeMessage.length === 11 && 
+                            (completeMessage.match(/:/g) || []).length === 2 && 
+                            (completeMessage.match(/\./g) || []).length === 1) {
                             logToConsole("Získaný čas: " + completeMessage);
-                            document.getElementById('time').value=completeMessage;
+                            document.getElementById('time').value = completeMessage;
                             showCustomAlert("Získaný čas: " + completeMessage);
-                        }else{
+                        } else {
                             console.log(completeMessage);
                         }
+
+
+
                 }
 
                 // Store the last chunk as the new partial message
                 partialMessage = chunks[chunks.length - 1];
             } catch (error) {
                 console.error("Error při čtení dat:", error);
+                reader.cancel();
+                _disconnect();
             }
         }
     }

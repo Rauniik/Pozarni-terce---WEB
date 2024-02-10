@@ -16,67 +16,151 @@
 {/if}
 
 <section id="main-text">
-<div class="main-header" style="font-size: 48px;">
-Popis našeho projektu
-</div>
-<div class="main-header">
-1) Proč?
-</div>
+<div style="font-size: 60px;" class="main-header">Cíl projektu</div>
+
 <div class="main-text">
-Vzhledem k tomu, že se oba dva věnujeme požárnímu sportu a víme jak aktuální časomíra funguje, rozhodli jsme se časomíru vylepšit. Aktuální verze časomíry nepodporuje možnost bezdrátové komunikace, tím pádem je součástí každé přípravy závodů nutnost natáhnout kabeláž ke každému terči. Naše verze časomíry se snaží tuto kabeláž zcela odstranit a nahradit ji bezdrátovou komunikací.
+	Cílem našeho projektu je vytvořit bezdrátovou časomíru pro požární sport. Součástí tohoto projektu je samotné zařízení, které umožňuje měřit dobu, za jakou je terč v požárním útoku a webové stránka, která umožňuje komplexní zpracování dat časomíry.
 </div>
-<br>
-<img class="image-full-site" src="https://www.cestakvitezstvi.cz/pictures/kabel2.jpg">
-<br>
-<div class="main-header">
-2) Jak by to celé mělo fungovat!
-</div>
+
 <div class="main-text">
-Cílem je ovládat celou časomíru pomocí jednoho notebooku. Jediné co by si uživatel určoval sám, by byl čas kdy se časomíra sepne. Zbytek plánujeme udělat zcela autonomní.<br><b>Funkce zařízení by tedy vypadala asi nějak takto: </b><br>1. Uživatel by odstartoval závod pomocí UI tlačítka na naší webové stránce<br>2. Časomíra by započala a čekala by na okamžik, kdy závodníci sestřelí oba dva terče. V tuto chvíli by měl mít uživatel možnost měření přerušit a tím zaznamenat pokus jako neplatný<br>3. Pokud se pokus zaznamená jako platný (terče odešlou platný čas), čas by se měl zapsat do databáze, kterou můžete již vidět na naší <a n:href="Terce:casomira">webové stránce</a>. Webová stránka pak sama vyhodnotí pořadí závodních týmů a zobrazí výsledkovou listinu v reálném čase. 
+	Vize byla zjednodušit přípravu časomíry na závodech požárního sportu tím, že odebereme nutnost tahání zbytečné kabeláže k terčům a uděláme celou časomíru zcela bezdrátovou.
 </div>
-<br>
-<div class="main-text" style="width:100%;">
-<img class="image-full-site image2" src="https://www.cestakvitezstvi.cz/pictures/Deska1.png">
-<img class="image-full-site image" src="https://www.cestakvitezstvi.cz/pictures/Deska2.png">
-</div>
-<br>
+
 <div class="main-text">
-<h2 class="main-text">Blokové schéma funkčnosti zařízení</h2>
-<img class="image-full-site" src="https://www.cestakvitezstvi.cz/pictures/blok-schem.png">
+	Jak to tedy celé funguje?
 </div>
-<br>
-<br>
-<div class="main-header">
-3)Technické specifikace
-</div>
+
 <div class="main-text">
-- čeká na vyplnění -
+	Celý systém se zkládá ze třech zařízení. Dvě zařízení se nachází přímo na terčích a na povel měří čas, za který je tým schopný disciplínu dokončit. Tato zařízení bezdrátově komunikují s třetím, které je zapojeno přímo do PC a plní účel komunikace s webovým serverem. Webový server následně data zpracovává a automaticky vytváří výsledkovou listinu podle získaných časů.
 </div>
-<div class="main-header">
-4)Bezdrátové MiWi připojení
+
+<div style="padding-top: 50px;" class="main-header">
+	Konstrukce plošného spoje
 </div>
+
 <div class="main-text">
-Komunikace našeho zařízení bude probíhat pomocí MiWi protokolu, který dovoluje bezdrátovou komunikace několik zařízení pomocí "Mesh" komunikace.<br>V podstatě se jedná o bluetooth komunikace, ale bez nutnosti párování zařízení. Pomocí externí antény na naší desce by přenos dat na větší vzdálenosti neměl být problém
+	Návrhem plošného spoje se v našem projektu primárně zabíval <i><a n:href="Authors:default" style="color: black;">Petr Bouda</a></i>, kterému se podařilo uskutečnit návrh dvou plošních spojů:
 </div>
-<div class="main-header">
-5)Programování a firmware část projektu
-</div>
+
 <div class="main-text">
-Programování našeho zařízení probíhá pomocí programátoru "Microchip PG16400", který nám umožňuje komunikovat přímo s mikrokontrolérem na naší desce. Díky tomuto zařízení jsme schopni zprovoznit komunikaci se všemi našemi periferiemi jako např. I2C komunikace s monitorovacím obvodem baterie. Sběrnice UART pro vypisování hodnot a sběrnice. SPI pro externí LED pásek. <br>Program pak vytváříme pomocí programu MPLAB X IDE od firmy Microchip. Zde můžete vidět zatím pouze teoretický návrh programu našeho zařízení:<br>
-<h2 class="main-text">Blokové schéma programu zařízení</h2>
-<img class="image-full-site" src="https://www.cestakvitezstvi.cz/pictures/blok-schem2.png">
+	<h3>1) Deska napájecího obvodu</h3>
 </div>
+
+<div class="main-text" style="width: 50%;">
+	Z důvodů kompaktnosti našeho zařízení jsme se rozhodli od sebe <b>oddělit napájecí obvod</b> našeho zařízení od samotné časomíry. Tím pádem můžeme ve finálním návrh tyto dva obvody vložit nad sebe a tím <b>ušetřit spoustu místa na terči</b>, než kdyby byl napájecí obvod přimo na PCB se senzory.
+</div>
+
+<div class="main-text" style="width: 50%;">
+	Jak už jsem tedy zmínil, <b>učel této desky je dodávat stabilní napájení</b> senzorům a microprocesoru na druhé desce. Na této desce se tedy nachází samotný <b>stabilizátor</b> stabilizující na 3,3V, <b>konektor na bateriový zdroj</b> a <b>USB konektor typu C</b> pro umožnění <b>komunikace s PC</b> (přes který naše zařízení komunikuje s webovým serverem).
+</div>
+
+<div>
+	<img class="image-full-site picture-border" style="width: 30%;" alt="PCB_Charger" src="https://www.cestakvitezstvi.cz/pictures/PCB_Charger">
+</div>
+
+<div class="main-text">
+	<h3>2) Deska vykonávající funkci časomíry</h3>
+</div>
+
+<div class="main-text" style="width: 50%;">
+	Tato deska má na starosti vykonání funkcí samotné časomíry. Na desce se nachází <b>gyroskop</b>, který používáme k zaznamenání pohybu vody skrz terč. <b>Konektor pro LED pásek</b> pro indikaci, že terč byl sestřelen a <b>konektor pro startovací pistoly</b>.
+</div>
+
+<div class="main-text" style="width: 50%;">
+	Pro <b>bezdrátovou komunikaci</b> jsme na desky také umístili <b>anténu, která zajišťuje přenos na vzdálenost dostačující účelům požárního sportu</b>. V případě náročnějších podmínek jsme také na desku nainstalovali konektor pro externí anténu, která se dá případně připojit a tím značně prodloužit dosah bezdrátové komunikace mezi zařízeními.
+</div>
+
+<div>
+	<img class="image-full-site picture-border" style="width: 30%;" alt="PCB_Senzor" src="https://www.cestakvitezstvi.cz/pictures/PCB_Senzor">
+</div>
+
+<div style="padding-top: 50px;" class="main-header">
+	Instalace časomíry
+</div>
+
+<div class="main-text">
+	Instalaci jsme se pokusili udělat co nejjednodušší to šlo. Pro komunikaci s webovým serverem stačí jen zařízení připojit do počítače pomocí USB C kabelu a komunikaci spustit uvnitř naší webové stránky. 
+</div>
+
+<div class="main-text">
+	Samotná instalace na terči by také neměla být extra složítá ale vyžaduje pár kroků navíc. Pro zajištění toho, aby deska byla schopná správně rozeznat, že terč byl sestřelen je potřeba za zdířku v terči nainstalovat jakási dvířka, která umožní pohyb našeho zařízení na terči. Princip je velmi podobný jako aktuální řešení pomocí zklápěcích terčů. Neboli že voda proletí zdířkou a sklopí terč tím zastaví časomíru. My jsme sáhli po více kreativním řešení a místo toho aby se naše "dvířka" sklápěla, tak se vyklápí směrem nahoru. Zajistí to to, že po každém útoku není potřeba terč resetovat ale zresetuje se sám pomocí gravitace.
+</div>
+
+<div class="main-text">
+	Dvířka je na terč samožrejmě potřeba instalovat jen poprvé. Zařízení pak stačí jen na konci závodů z dvířek odepnout a např. ho připojit na nabíječku aby bylo připraveno zase na přístí závody.
+</div>
+
+<div style="padding-top: 50px;" class="main-header">
+	Databáze a webové rozhraní
+</div>
+
+<div class="main-text">
+	Náš webový server je postaven na frameworku Nette, který nádherně implementuje práci s daty, přesně tak jak mi potřebujeme. Vytváření webových stránek měl v našem projektu nastarosti <i><a n:href="Authors:default" style="color: black;">Jakub Rauner</a></i>. Webová stránka se zkládá z těchto oddílů:
+</div>
+
 <div class="main-header">
-6)Fotogalerie
+	<a style="color: black; text-decoration: none; font-size: 28px;" n:href="Guest:default id:18">1) Tabulka s výsledky pro nepříhlášené uživatele</a>
 </div>
-<!--<div class="main-text" style="height:500px;">
-<img style="height:324;width:257;" class="image-gallery" src="/www/pictures/snap-pg164100.png">
-<img style="height:442;width:285;" class="image-gallery" src="/www/pictures/terc1.png">
-<img style="height:406;width:208;" class="image-gallery2" src="/www/pictures/snap-pg164100.png">
-<img style="height:406;width:208;" class="image-gallery2" src="/www/pictures/terc2.png">
+
+<div class="main-text">
+	Aby se využilo toho, že webová stránka je přístupná z jakéhokoliv zařízení, implementovali jsme tabulku, ve které si jakýkoliv uživatel může zobrazit data pro jakékoliv závody
 </div>
-<div class="main-text" style="height:800px;">
-<img class="image-full-site image2" src="/www/pictures/blok-schema3.png">
-<img class="image-full-site image" src="/www/pictures/blok-schema4.png">-->
+
+<div class="main-text">
+	Stačí si jen vybrat data jakého uživatele si hodláte zobrazit a tabulka se vám následně vytvoří. Výsledky v tabulce se budou vypočítavat podle metody, kterou si majitel dat zvolil.
+</div>
+
+<div>
+	<a n:href="Guest:default id:18"><img class="image-full-site picture-border" style="width: 30%;" alt="WEB_Guest" src="https://www.cestakvitezstvi.cz/pictures/WEB_Guest"></a>
+</div>
+
+<div class="main-header">
+	<a style="color: black; text-decoration: none; font-size: 28px;" n:href="Terce:casomira typ_vypoctu:min">2) Rozhraní pro úpravu dat v datázi danéhu uživatele</a>
+</div>
+
+<div class="main-text">
+	Jedna ze dvou důležitých záložek naší webové stránky obsahuje <b>možnost upravovat data</b> získaná naší časomírou. A to: <b>1) mazání nevhodných dat, 2) Změna metody výpočtu výsledků </b>(max = nejhorší čas, min = nejlepší čas, sum = součet všech časů, prum = průměr časů),<b> 3) vkládání dat manuálně, 4) vytváření vlastních kategorií a registrování týmu do závodu.</b>
+</div>
+
+<div class="picture-container">
+	<img class="picture-border" src="https://www.cestakvitezstvi.cz/pictures/WEB_Kategorie" alt="Kategorie">
+	<img class="picture-border" src="https://www.cestakvitezstvi.cz/pictures/WEB_Vysledky" alt="Výsledky">
+	<img class="picture-border" src="https://www.cestakvitezstvi.cz/pictures/WEB_Tymy" alt="Týmy">
+</div>
+
+<div class="main-header">
+	<a style="color: black; text-decoration: none; font-size: 28px;" n:href="Preview:default id:18">3) Tabulka s výsledky</a>
+</div>
+
+<div class="main-text">
+	Primární účel této tabulky je zobrazování výsledků např. na nějaké obrazovce. Stránka jako jediná disponuje funkcí automatické aktualizace a je tím pádem vždy aktuální. Stejně jako na stránce s výsledky pro nepřihlášené uživatele se data zobrazují podle metody tak jak si jejich majitel určí. Na vizuální podobě této stránky se stále pracuje. Měla by být co nejjednodušší ale zároveň co nejpřehlednější. 
+</div>
+
+<div>
+	<a n:href="Preview:default id:18"><img class="image-full-site picture-border" style="width: 20%;" alt="WEB_Preview" src="https://www.cestakvitezstvi.cz/pictures/WEB_Preview"></a>
+</div>
+
+<div class="main-header">
+	<a style="color: black; text-decoration: none; font-size: 28px;" n:href="Device:default">4) Stránka pro komunikaci se zařízením</a>
+</div>
+
+<div class="main-text">
+	Nejdůležitejší část naší webové stránky je samotná komunikace s naším zařízení. To zajišťuje právě tato stránka. Umožňuje se připojit na externí zařízení (naší časomíru) a komunikovat s ní. Na stránce se nachází formulář s možností výběru týmu a také s pole ve kterém se zobrazí získaní čas. Pod tímto formulářem se také nachází konzole ve které je vypsaná celá historie získaních časů a kliknutím si můžete čas klidně zvolit a vložit ho do databáze znovu.
+</div>
+
+<div>
+	<a n:href="Device:default"><img class="image-full-site picture-border" style="width: 30%;" alt="WEB_Device" src="https://www.cestakvitezstvi.cz/pictures/WEB_Device"></a>
+</div>
+
+<div style="padding-top: 50px;" class="main-header">
+	Firmware PCB
+</div>
+
+<div class="main-text">
+	K programování naší desky používáme program Atmel Studio. Tento program jsme zvolili z důvodu, že je to jediný program který podporuje programování našeho wireless radia a to MiWi protokolu. Tento program nám také umožňuje číst data z našeho gyroskopu a spouštět stopky na přesnosti mikrosekund.
+</div>
+
+<div class="main-text">
+	Firmware našeho zařízení stále není kompletní a v aktuální chvíli se na něm pracuje. Dokumentaci k němu doplníme hned co to půjde!
 </div>
 </section>
