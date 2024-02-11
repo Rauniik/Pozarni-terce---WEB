@@ -44,7 +44,7 @@ final class LoginPresenter extends Nette\Application\UI\Presenter
             $this->getUser()->login($data->username, $data->password);
             $this->flashMessage('Logged in!', 'yes');
             $results_method = $this->database->fetchAll(
-                "SELECT vypocet FROM admin WHERE id = ?", $this->user->getIdentity()->id);
+                "SELECT vypocet FROM admin WHERE id_uzivatele = ?", $this->user->getIdentity()->id);
             $method = $results_method[0]->vypocet;
             $this->redirect('Terce:casomira', [$method]);
     

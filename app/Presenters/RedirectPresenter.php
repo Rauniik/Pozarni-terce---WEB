@@ -16,7 +16,7 @@ final class RedirectPresenter extends Nette\Application\UI\Presenter
 		    $this->redirect('Login:');
 	    }
         $results_method = $this->database->fetchAll(
-                "SELECT vypocet FROM admin WHERE id = ?", $this->user->getIdentity()->id);
+                "SELECT vypocet FROM admin WHERE id_uzivatele = ?", $this->user->getIdentity()->id);
             $method = $results_method[0]->vypocet;
         $this->redirect('Terce:casomira', ['typ_vypoctu' => $method]);
     }
