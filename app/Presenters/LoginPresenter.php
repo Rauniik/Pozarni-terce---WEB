@@ -43,7 +43,10 @@ final class LoginPresenter extends Nette\Application\UI\Presenter
         try {
             $this->getUser()->login($data->username, $data->password);
             $this->flashMessage('Logged in!', 'yes');
-            $this->redirect('Terce:casomira', 'vse');
+            $results_method = $this->database->fetchAll(
+                "SELECT vypocet FROM admin WHERE id = ?", $this->user->getIdentity()->id);
+            $method = $results_method[0]->vypocet;
+            $this->redirect('Terce:casomira', [$method]);
     
         } catch (Nette\Security\AuthenticationException $e) {
             $this->redirect('Home:');
