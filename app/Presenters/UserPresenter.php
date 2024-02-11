@@ -25,14 +25,19 @@ final class UserPresenter extends Nette\Application\UI\Presenter
 
     }
 
-    public function renderDefault() {
+    public function renderDefault($visibility) {
 
-        
+        $this->database->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
+
+        $this->database->table('uzivatel')->where('id=?', $this->user->getIdentity()->id)->update([
+            'visibility' => $visibility,
+        ]);
+
         $this->template->actionName = $this->getPresenter()->action;
 
         $results_users = $this->database->fetchAll(
-			"SELECT id, username FROM uzivatel WHERE id = ?", $this->user->getIdentity()->id);
-		$this->template->users = $results_users;
+			"SELECT id, username, visibility FROM uzivatel WHERE id = ?", $this->user->getIdentity()->id);
+		$this->template->users = $results_users; 
 
         $this->template->actionName = $this->getPresenter()->action;
 
@@ -43,4 +48,5 @@ final class UserPresenter extends Nette\Application\UI\Presenter
         $this->database->table('uzivatel')->where('id',$id)->delete();
         $this->redirect('Login:Out');
     }
+
 }

@@ -18,8 +18,10 @@ final class AdminPresenter extends Nette\Application\UI\Presenter
 	    }
         if ($this->user->getIdentity()->getData()['name'] != 'Rauniik'){
             if($this->user->getIdentity()->getData()['name'] != 'Petr'){
-            
-            $this->redirect('User:');
+            $results_users = $this->database->fetchAll(
+                "SELECT id, username, visibility FROM uzivatel WHERE id = ?", $this->user->getIdentity()->id);
+            $visibility = $results_users[0]->visibility;
+            $this->redirect('User:default', ['visibility' => $visibility]);
             }
         }
     }

@@ -19,11 +19,11 @@
 <div style="font-size: 60px;" class="main-header">Cíl projektu</div>
 
 <div class="main-text">
-	Cílem našeho projektu je vytvořit bezdrátovou časomíru pro požární sport. Součástí tohoto projektu je samotné zařízení, které umožňuje měřit dobu, za jakou je terč v požárním útoku a webové stránka, která umožňuje komplexní zpracování dat časomíry.
+	Cílem našeho projektu je vytvořit bezdrátovou časomíru pro požární sport. Součástí tohoto projektu je samotné zařízení, které umožňuje měřit dobu, za jakou je terč v požárním útoku a webová stránka, která umožňuje komplexní zpracování dat časomíry.
 </div>
 
 <div class="main-text">
-	Vize byla zjednodušit přípravu časomíry na závodech požárního sportu tím, že odebereme nutnost tahání zbytečné kabeláže k terčům a uděláme celou časomíru zcela bezdrátovou.
+	Vize byla zjednodušit přípravu časomíry na závodech požárního sportu tím, že odebereme nutnost tahání nadměrné kabeláže k terčům a uděláme celou časomíru zcela bezdrátovou.
 </div>
 
 <div class="main-text">
@@ -31,7 +31,7 @@
 </div>
 
 <div class="main-text">
-	Celý systém se zkládá ze třech zařízení. Dvě zařízení se nachází přímo na terčích a na povel měří čas, za který je tým schopný disciplínu dokončit. Tato zařízení bezdrátově komunikují s třetím, které je zapojeno přímo do PC a plní účel komunikace s webovým serverem. Webový server následně data zpracovává a automaticky vytváří výsledkovou listinu podle získaných časů.
+	Celý systém se zkládá ze třech zařízení. Dvě zařízení se nachází přímo na terčích a na povel měří čas, za který je tým schopný disciplínu dokončit. Tato zařízení bezdrátově komunikují s třetím zařízením, které je zapojeno přímo do počítače a plní účel komunikace s webovým serverem. Webový server následně data zpracovává a automaticky vytváří výsledkovou listinu podle získaných časů.
 </div>
 
 <div style="padding-top: 50px;" class="main-header">
@@ -39,7 +39,7 @@
 </div>
 
 <div class="main-text">
-	Návrhem plošného spoje se v našem projektu primárně zabíval <i><a n:href="Authors:default" style="color: black;">Petr Bouda</a></i>, kterému se podařilo uskutečnit návrh dvou plošních spojů:
+	Návrhem plošného spoje se v našem projektu primárně zabýval <i><a n:href="Authors:default" style="color: black;">Petr Bouda</a></i>, který vyvinul návrh dvou plošních spojů pro funkci celého konceptu projektu:
 </div>
 
 <div class="main-text">
@@ -47,11 +47,11 @@
 </div>
 
 <div class="main-text" style="width: 50%;">
-	Z důvodů kompaktnosti našeho zařízení jsme se rozhodli od sebe <b>oddělit napájecí obvod</b> našeho zařízení od samotné časomíry. Tím pádem můžeme ve finálním návrh tyto dva obvody vložit nad sebe a tím <b>ušetřit spoustu místa na terči</b>, než kdyby byl napájecí obvod přimo na PCB se senzory.
+	Z důvodů kompaktnosti našeho zařízení jsme se rozhodli od sebe <b>oddělit napájecí obvod</b> našeho zařízení od samotné časomíry a vytvořit ho modulární. Tím pádem můžeme ve finálním návrh tyto dva obvody vložit nad sebe a <b>ušetřit spoustu místa na terči</b>, než kdyby byl napájecí obvod přímo na plošném spoji se senzory.
 </div>
 
 <div class="main-text" style="width: 50%;">
-	Jak už jsem tedy zmínil, <b>učel této desky je dodávat stabilní napájení</b> senzorům a microprocesoru na druhé desce. Na této desce se tedy nachází samotný <b>stabilizátor</b> stabilizující na 3,3V, <b>konektor na bateriový zdroj</b> a <b>USB konektor typu C</b> pro umožnění <b>komunikace s PC</b> (přes který naše zařízení komunikuje s webovým serverem).
+	Jak už jsem tedy zmínil, <b>účel této desky je dodávat stabilní napájení</b> senzorům a microprocesoru na druhé desce. Na této desce se tedy nachází samotný <b>stabilizátor</b> stabilizující napětí o velikosti 3,3V, <b>konektor na bateriový zdroj</b> a zároveň <b>USB konektor typu C</b> pro umožnění <b>komunikace s počítačem</b> (přes který naše zařízení komunikuje s webovým serverem).
 </div>
 
 <div>
@@ -63,11 +63,15 @@
 </div>
 
 <div class="main-text" style="width: 50%;">
-	Tato deska má na starosti vykonání funkcí samotné časomíry. Na desce se nachází <b>gyroskop</b>, který používáme k zaznamenání pohybu vody skrz terč. <b>Konektor pro LED pásek</b> pro indikaci, že terč byl sestřelen a <b>konektor pro startovací pistoly</b>.
+	Tato deska má na starosti vykonání funkcí samotné časomíry. Na desce se nachází <b>inklinometr</b>, který používáme k zaznamenání pohybu vody skrz terč. <b>Konektor na LED pásek</b> pro indikaci, že terč byl sestřelen a <b>konektor pro startovací pistoli</b>.
 </div>
 
 <div class="main-text" style="width: 50%;">
-	Pro <b>bezdrátovou komunikaci</b> jsme na desky také umístili <b>anténu, která zajišťuje přenos na vzdálenost dostačující účelům požárního sportu</b>. V případě náročnějších podmínek jsme také na desku nainstalovali konektor pro externí anténu, která se dá případně připojit a tím značně prodloužit dosah bezdrátové komunikace mezi zařízeními.
+	Zabudovaný <b>inklinometr</b> na desce má za úkol zjistit daný úhel sklonu sestřelení terče proudem vody.
+</div>
+
+<div class="main-text" style="width: 50%;">
+	Pro <b>bezdrátovou komunikaci</b> je na desce umístěna <b>interní anténa, která zajišťuje přenos na vzdálenost dostačující účelům požárního sportu</b>. V případě náročnějších podmínek vlivem terénu je  také na desce zabudovaný konektor pro externí anténu, která se dá případně připojit a tím značně prodloužit dosah bezdrátové komunikace mezi zařízeními.
 </div>
 
 <div>
@@ -79,15 +83,15 @@
 </div>
 
 <div class="main-text">
-	Instalaci jsme se pokusili udělat co nejjednodušší to šlo. Pro komunikaci s webovým serverem stačí jen zařízení připojit do počítače pomocí USB C kabelu a komunikaci spustit uvnitř naší webové stránky. 
+	Instalace celého zařízení byla tvořená tak, aby byla co nejjednodušší. Pro komunikaci s webovým serverem stačí zařízení  pouze připojit do počítače pomocí <b>USB-C kabelu</b> a komunikaci spustit uvnitř naší webové stránky. 
 </div>
 
 <div class="main-text">
-	Samotná instalace na terči by také neměla být extra složítá ale vyžaduje pár kroků navíc. Pro zajištění toho, aby deska byla schopná správně rozeznat, že terč byl sestřelen je potřeba za zdířku v terči nainstalovat jakási dvířka, která umožní pohyb našeho zařízení na terči. Princip je velmi podobný jako aktuální řešení pomocí zklápěcích terčů. Neboli že voda proletí zdířkou a sklopí terč tím zastaví časomíru. My jsme sáhli po více kreativním řešení a místo toho aby se naše "dvířka" sklápěla, tak se vyklápí směrem nahoru. Zajistí to to, že po každém útoku není potřeba terč resetovat ale zresetuje se sám pomocí gravitace.
+	Samotná instalace na terči byla myšlená tak, aby nebyla extrémně složítá. Pro zajištění toho, aby deska byla schopná správně rozeznat, že terč byl sestřelen, je potřeba zařízení umístit na terč, který má za sebou danou <b>sklopnou desku</b>, nejlépe směrem nahoru.  Díky tomu lze není potřeba po každém útoku terč resetovat, ale zresetuje se sám pomocí gravitace.
 </div>
 
 <div class="main-text">
-	Dvířka je na terč samožrejmě potřeba instalovat jen poprvé. Zařízení pak stačí jen na konci závodů z dvířek odepnout a např. ho připojit na nabíječku aby bylo připraveno zase na přístí závody.
+	Zařízení pak stačí jen na konci závodů ze sklopné desky odepnout a např. ho připojit na nabíječku, aby bylo připravené znovu na přístí závody.
 </div>
 
 <div style="padding-top: 50px;" class="main-header">
@@ -95,19 +99,19 @@
 </div>
 
 <div class="main-text">
-	Náš webový server je postaven na frameworku Nette, který nádherně implementuje práci s daty, přesně tak jak mi potřebujeme. Vytváření webových stránek měl v našem projektu nastarosti <i><a n:href="Authors:default" style="color: black;">Jakub Rauner</a></i>. Webová stránka se zkládá z těchto oddílů:
+	Náš webový server je postaven na frameworku Nette, který nádherně implementuje práci s daty, přesně tak jak my potřebujeme. Vytváření webových stránek měl v našem projektu na starosti <i><a n:href="Authors:default" style="color: black;">Jakub Rauner</a></i>. Webová stránka se zkládá z těchto oddílů:
 </div>
 
 <div class="main-header">
 	<a style="color: black; text-decoration: none; font-size: 28px;" n:href="Guest:default id:18">1) Tabulka s výsledky pro nepříhlášené uživatele</a>
 </div>
 
-<div class="main-text">
+<div class="main-text" style="width: 50%;">
 	Aby se využilo toho, že webová stránka je přístupná z jakéhokoliv zařízení, implementovali jsme tabulku, ve které si jakýkoliv uživatel může zobrazit data pro jakékoliv závody
 </div>
 
-<div class="main-text">
-	Stačí si jen vybrat data jakého uživatele si hodláte zobrazit a tabulka se vám následně vytvoří. Výsledky v tabulce se budou vypočítavat podle metody, kterou si majitel dat zvolil.
+<div class="main-text" style="width: 50%;">
+	Stačí si jen vybrat data jakého uživatele chcete zobrazit a tabulka se vám následně vytvoří. Výsledky v tabulce se budou vypočítavat podle metody, kterou si majitel dat zvolil.
 </div>
 
 <div>
@@ -115,10 +119,10 @@
 </div>
 
 <div class="main-header">
-	<a style="color: black; text-decoration: none; font-size: 28px;" n:href="Terce:casomira typ_vypoctu:min">2) Rozhraní pro úpravu dat v datázi danéhu uživatele</a>
+	<a style="color: black; text-decoration: none; font-size: 28px;" n:href="Terce:casomira typ_vypoctu:min">2) Rozhraní pro úpravu dat v datázi daného uživatele</a>
 </div>
 
-<div class="main-text">
+<div class="main-text" style="width: 50%;">
 	Jedna ze dvou důležitých záložek naší webové stránky obsahuje <b>možnost upravovat data</b> získaná naší časomírou. A to: <b>1) mazání nevhodných dat, 2) Změna metody výpočtu výsledků </b>(max = nejhorší čas, min = nejlepší čas, sum = součet všech časů, prum = průměr časů),<b> 3) vkládání dat manuálně, 4) vytváření vlastních kategorií a registrování týmu do závodu.</b>
 </div>
 
@@ -132,8 +136,8 @@
 	<a style="color: black; text-decoration: none; font-size: 28px;" n:href="Preview:default id:18">3) Tabulka s výsledky</a>
 </div>
 
-<div class="main-text">
-	Primární účel této tabulky je zobrazování výsledků např. na nějaké obrazovce. Stránka jako jediná disponuje funkcí automatické aktualizace a je tím pádem vždy aktuální. Stejně jako na stránce s výsledky pro nepřihlášené uživatele se data zobrazují podle metody tak jak si jejich majitel určí. Na vizuální podobě této stránky se stále pracuje. Měla by být co nejjednodušší ale zároveň co nejpřehlednější. 
+<div class="main-text" style="width: 50%;">
+	Primární účel této tabulky je zobrazování výsledků např. na vystavené obrazovce. Stránka jako jediná disponuje funkcí automatické aktualizace a je tím pádem vždy aktuální. Stejně jako na stránce s výsledky pro nepřihlášené uživatele se data zobrazují podle metody tak jak si jejich majitel určí. Na vizuální podobě této stránky se stále pracuje. Měla by být co nejjednodušší ale zároveň co nejpřehlednější. 
 </div>
 
 <div>
@@ -144,8 +148,8 @@
 	<a style="color: black; text-decoration: none; font-size: 28px;" n:href="Device:default">4) Stránka pro komunikaci se zařízením</a>
 </div>
 
-<div class="main-text">
-	Nejdůležitejší část naší webové stránky je samotná komunikace s naším zařízení. To zajišťuje právě tato stránka. Umožňuje se připojit na externí zařízení (naší časomíru) a komunikovat s ní. Na stránce se nachází formulář s možností výběru týmu a také s pole ve kterém se zobrazí získaní čas. Pod tímto formulářem se také nachází konzole ve které je vypsaná celá historie získaních časů a kliknutím si můžete čas klidně zvolit a vložit ho do databáze znovu.
+<div class="main-text" style="width: 50%;">
+	Nejdůležitejší část naší webové stránky je samotná komunikace s naším zařízením. To zajišťuje právě tato stránka. Umožňuje se připojit na externí zařízení (naší časomíru) a komunikovat s ní. Na stránce se nachází formulář s možností výběru týmu a také s pole ve kterém se zobrazí získaní čas. Pod tímto formulářem se také nachází konzole, ve které je vypsaná celá historie získaních časů a kliknutím si můžete čas klidně zvolit a poté ho vložit do databáze znovu.
 </div>
 
 <div>
@@ -157,7 +161,7 @@
 </div>
 
 <div class="main-text">
-	K programování naší desky používáme program Atmel Studio. Tento program jsme zvolili z důvodu, že je to jediný program který podporuje programování našeho wireless radia a to MiWi protokolu. Tento program nám také umožňuje číst data z našeho gyroskopu a spouštět stopky na přesnosti mikrosekund.
+	K programování naší desky používáme program Atmel Studio. Tento program jsme zvolili z důvodu, že je to jediný program který podporuje programování našeho <b>wireless radia a to MiWi protokolu</b>. Tento program nám také umožňuje číst data z našeho zabudovaného inklinometru a spouštět stopky na přesnosti mikrosekund.
 </div>
 
 <div class="main-text">

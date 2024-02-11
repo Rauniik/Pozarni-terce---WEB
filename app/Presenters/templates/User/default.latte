@@ -19,4 +19,13 @@
 <a class="delete" href="{link Guest:default, id => $uzivatel->id}">Odkaz na stránku s ID {$uzivatel->id}</a>
 <p>Odkaz na webovou stránku jako text:<br><p style="font-style: italic;">https://www.cestakvitezstvi.cz/guest/default/{$uzivatel->id}</p></p>
 </div>
+<div class="main-header">
+Zobrazit můj profil pro všechny uživatele?
+</div>
+<div class="main-text">
+	{foreach $users as $uzivatel}
+        <a class="delete" n:href="User:default visibility:1" {if $uzivatel->visibility == 1} style="background-color: #0fc1d9;"{/if}>ANO</a>
+        <a class="delete" n:href="User:default visibility:0" {if $uzivatel->visibility == 0} style="background-color: #0fc1d9;"{/if}>NE</a>
+    {/foreach}
+</div>
 {/block}

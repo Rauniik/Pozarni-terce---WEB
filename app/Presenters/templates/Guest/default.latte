@@ -52,10 +52,12 @@
 		<th>Výběr</th>
 	</tr>
 	{foreach $users as $username}
+	{if $username->visibility == 1}
 	<tr>
 		<td>{$username->username}</td>
 		<td><a class="delete" n:href="Guest: $username->id">Vybrat</a></td>
 	</tr>
+	{/if}
 	{/foreach}
 </table>
 <br>

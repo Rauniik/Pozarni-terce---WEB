@@ -44,7 +44,7 @@ final class GuestPresenter extends Nette\Application\UI\Presenter
         }
 
         $results_users = $this->database->fetchAll(
-			"SELECT id, username FROM uzivatel WHERE id > ?", $guestVisibility);
+			"SELECT id, username, visibility FROM uzivatel WHERE id > ?", $guestVisibility);
 		$this->template->users = $results_users;
 
             $teamsData = $this->database->fetchAll(
