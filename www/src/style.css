@@ -661,4 +661,8 @@ input[type="password"] {
   padding-top: 25px;
 }
 
+.red {
+  background-color: red;
+}
+
 

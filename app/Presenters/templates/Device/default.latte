@@ -120,20 +120,22 @@
 
                 // Iterate over the chunks, excluding the last one (incomplete message)
                 for (let i = 0; i < chunks.length - 1; i++) {
-                        const completeMessage = chunks[i].trim();
-                        if (completeMessage.length === 11 && 
-                            (completeMessage.match(/:/g) || []).length === 2 && 
-                            (completeMessage.match(/\./g) || []).length === 1) {
-                            logToConsole("Získaný čas: " + completeMessage);
-                            document.getElementById('time').value = completeMessage;
-                            showCustomAlert("Získaný čas: " + completeMessage);
-                        } else {
-                            console.log(completeMessage);
-                        }
-
-
-
+                    let completeMessage = chunks[i].trim();
+                    if (completeMessage.length === 12) {
+                        // Odebrání posledního bitu
+                        completeMessage = completeMessage.substring(0, completeMessage.length - 1);
+                        
+                        logToConsole("Získaný čas: " + completeMessage);
+                        document.getElementById('time').value = completeMessage;
+                        showCustomAlert("Získaný čas: " + completeMessage);
+                    } else if (completeMessage.length === 8){
+                        completeMessage = "Časomíra spuštěna!";
+                        logToConsole(completeMessage);
+                    } else {
+                        console.log(completeMessage);
+                    }
                 }
+
 
                 // Store the last chunk as the new partial message
                 partialMessage = chunks[chunks.length - 1];
@@ -225,28 +227,28 @@
     }
 
     function logToConsole(message) {
-    var consoleDiv = document.getElementById("customConsole");
-    if (typeof message === 'object') {
-        message = JSON.stringify(message);
-    }
-    const formattedMessage = message.trim(); // Remove leading/trailing whitespace
+        var consoleDiv = document.getElementById("customConsole");
+        if (typeof message === 'object') {
+            message = JSON.stringify(message);
+        }
+        const formattedMessage = message.trim(); // Remove leading/trailing whitespace
 
-    // Extract the actual data without the prefix
-    const dataWithoutPrefix = formattedMessage.replace(/^Získaný čas: /, '');
+        // Extract the actual data without the prefix
+        const dataWithoutPrefix = formattedMessage.replace(/^Získaný čas: /, '');
+        
+        // Keep the time and "Received data:" in the console
+        const consoleEntry = document.createElement('div');
+        consoleEntry.classList.add('console-entry');
+        consoleEntry.innerHTML = formattedMessage;
+        consoleDiv.appendChild(consoleEntry);
 
-    // Keep the time and "Received data:" in the console
-    const consoleEntry = document.createElement('div');
-    consoleEntry.classList.add('console-entry');
-    consoleEntry.innerHTML = formattedMessage;
-    consoleDiv.appendChild(consoleEntry);
+        // Add click event listener to each console entry
+        consoleEntry.addEventListener('click', () => {
+            // Insert only the data into the input with ID "time"
+            document.getElementById('time').value = dataWithoutPrefix;
+        });
 
-    // Add click event listener to each console entry
-    consoleEntry.addEventListener('click', () => {
-        // Insert only the data into the input with ID "time"
-        document.getElementById('time').value = dataWithoutPrefix;
-    });
-
-    consoleDiv.scrollTop = consoleDiv.scrollHeight; // Auto-scroll to the bottom
+        consoleDiv.scrollTop = consoleDiv.scrollHeight; // Auto-scroll to the bottom
     }
 
     // Redirect console.log to the custom console

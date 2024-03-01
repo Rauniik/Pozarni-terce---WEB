@@ -11,40 +11,39 @@
 
 <body>
 
-	<img style="float:right;width:96px;height:96px;padding:5px;" src="https://www.cestakvitezstvi.cz/pictures/logo.png">
-  	<img style="float:left;width:96px;height:96px;padding:5px;" src="https://www.cestakvitezstvi.cz/pictures/logo.png">
+    <img style="float:right;width:96px;height:96px;padding:5px;" src="https://www.cestakvitezstvi.cz/pictures/logo.png">
+      <img style="float:left;width:96px;height:96px;padding:5px;" src="https://www.cestakvitezstvi.cz/pictures/logo.png">
 
-	<h1 class="nadpis">
-	Bezdrátová časomíra pro požární terče
-	</h1>
-	<br>
-	<ul class="nav-menu" id="menu">
-  <li><a n:href="Home:default" {if $presenter->linkCurrent}class="active"{/if}>Projekt</a></li>
-  {if $user->isLoggedIn()}
-  <li class="dropdown">
-    <a href="javascript:void(0)" class="dropbtn">Časomíra</a>
-    <div class="dropdown-content">
-      <a n:href="Redirect:" {if $presenter->linkCurrent}class="active"{/if}>Správa výsledků</a>
-      <a n:href="Terce:tymy" {if $presenter->linkCurrent}class="active"{/if}>Týmy</a>
-      <a n:href="Terce:kategorie" {if $presenter->linkCurrent}class="active"{/if}>Kategorie</a>
-      <a n:href="Device:" {if $presenter->linkCurrent}class="active"{/if}>Bezdrátová časomíra</a>
-    </div>
-  </li>
-  {else}
-  <li><a n:href="Guest:" {if $presenter->linkCurrent}class="active"{/if}>Časomíra</a></li>
-  {/if}
-  {if $user->isLoggedIn()}
-  <li class="logout"><a n:href="Login:out">Odhlásit</a></li>
-  {else}
-  <li class="logout"><a n:href="Login:default">Přihlásit</a></li>
-  {/if}
-  {if $user->isLoggedIn()}
-  <li class="admin"><a n:href="Admin:"{if $presenter->linkCurrent}class="active"{/if}>Můj Profil</a></li>
-  {/if}
-	</ul>
-
+    <h1 class="nadpis">
+    Bezdrátová časomíra pro požární terče
+    </h1>
+    <br>
+    <ul class="nav-menu" id="menu">
+    <li><a n:href="Home:default" {if $presenter->linkCurrent}class="active"{/if}>Projekt</a></li>
+    {if $user->isLoggedIn()}
+    <li class="dropdown">
+      <a href="javascript:void(0)" class="dropbtn">Časomíra</a>
+      <div class="dropdown-content">
+        <a n:href="Redirect:" {if $presenter->linkCurrent}class="active"{/if}>Správa výsledků</a>
+        <a n:href="Terce:tymy" {if $presenter->linkCurrent}class="active"{/if}>Týmy</a>
+        <a n:href="Terce:kategorie" {if $presenter->linkCurrent}class="active"{/if}>Kategorie</a>
+        <a n:href="Device:" {if $presenter->linkCurrent}class="active"{/if}>Bezdrátová časomíra</a>
+      </div>
+    </li>
+    {else}
+    <li><a n:href="Guest:" {if $presenter->linkCurrent}class="active"{/if}>Časomíra</a></li>
+    {/if}
+    {if $user->isLoggedIn()}
+    <li class="logout"><a n:href="Login:out">Odhlásit</a></li>
+    {else}
+    <li class="logout"><a n:href="Login:default">Přihlásit</a></li>
+    {/if}
+    {if $user->isLoggedIn()}
+    <li class="admin"><a n:href="Admin:"{if $presenter->linkCurrent}class="active"{/if}>Můj Profil</a></li>
+    {/if}
+    </ul>
 	{include content}
-
+</body>
 	<footer style="	padding-top: 30px;">
 
 	<div class="footer" style="background-color: #333">
@@ -68,8 +67,6 @@
 		</div>
 	</div>
 	</footer>
-
-</body>
 </html>
 
 <!--<style>

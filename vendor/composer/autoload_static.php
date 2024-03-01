@@ -15,18 +15,6 @@ class ComposerStaticInita7e6358bdd9b9aa449a304d397f40e0a
         array (
             'Symfony\\Thanks\\' => 15,
         ),
-        'E' => 
-        array (
-            'Endroid\\QrCode\\' => 15,
-        ),
-        'D' => 
-        array (
-            'DASPRiD\\Enum\\' => 13,
-        ),
-        'B' => 
-        array (
-            'BaconQrCode\\' => 12,
-        ),
         'A' => 
         array (
             'App\\' => 4,
@@ -37,18 +25,6 @@ class ComposerStaticInita7e6358bdd9b9aa449a304d397f40e0a
         'Symfony\\Thanks\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/thanks/src',
-        ),
-        'Endroid\\QrCode\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/endroid/qr-code/src',
-        ),
-        'DASPRiD\\Enum\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/dasprid/enum/src',
-        ),
-        'BaconQrCode\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/bacon/bacon-qr-code/src',
         ),
         'App\\' => 
         array (
